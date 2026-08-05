@@ -5,7 +5,8 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "src/uploads/posts");
   },
-// Genererar ett unikt filnamn men sparar filens ursprungliga filändelse (jpg, png, webp etc)
+
+  // Genererar ett unikt filnamn men sparar filens ursprungliga filändelse
   filename: (req, file, cb) => {
     const uniqueName =
       Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -14,7 +15,7 @@ const storage = multer.diskStorage({
   },
 });
 
-// Validation för filtyp och storlek
+// Validerar filtyp
 const fileFilter: multer.Options["fileFilter"] = (req, file, cb) => {
   const allowedTypes = [
     "image/jpeg",

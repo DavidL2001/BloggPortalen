@@ -1,17 +1,101 @@
 import { Request, Response } from "express";
-import { Post } from "../models/Post";
+import { Types } from "mongoose";
+import { Post, IPost } from "../models/Post";
 import fs from "fs";
 import path from "path";
 
-// Hämta alla inlägg
+// Typ för filter för sökning och kategorier
+type PostFilter = {
+  $or?: {
+    title?: { $regex: string; $options: string };
+    content?: { $regex: string; $options: string };
+  }[];
+  categoryId?: string | Types.ObjectId;
+};
+
+// Ser till att filer som laddas upp tas bort om något går fel i processen, t.ex. om det inte går att skapa ett inlägg.
+const deleteImage = (imagePath: string) => {
+  const fullPath = path.join(
+    process.cwd(),
+    "src",
+    imagePath.replace(/^\/+/, "")
+  );
+
+  if (fs.existsSync(fullPath)) {
+    fs.unlinkSync(fullPath);
+  }
+};
+
+// Hämta inlägg med sökning, kategorifiltrering, sortering och paginering
 export const getPosts = async (req: Request, res: Response) => {
   try {
-    const posts = await Post.find();
+    const search =
+      typeof req.query.search === "string"
+        ? req.query.search
+        : undefined;
 
-    res.status(200).json(posts);
+    const category =
+      typeof req.query.category === "string"
+        ? req.query.category
+        : undefined;
+
+    const sort =
+      typeof req.query.sort === "string"
+        ? req.query.sort
+        : undefined;
+
+    const page =
+      typeof req.query.page === "string"
+        ? Number(req.query.page)
+        : 1;
+
+    const limit =
+      typeof req.query.limit === "string"
+        ? Number(req.query.limit)
+        : 10;
+
+    const filter: PostFilter = {};
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { content: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    if (category) {
+      filter.categoryId = category;
+    }
+
+    let sortOption: { createdAt: 1 | -1 } = {
+      createdAt: -1,
+    };
+
+    if (sort === "oldest") {
+      sortOption = {
+        createdAt: 1,
+      };
+    }
+
+    const skip = (page - 1) * limit;
+    const totalPosts = await Post.countDocuments(filter);
+    const posts = await Post.find(filter)
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit);
+
+    res.status(200).json({
+      posts,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalPosts / limit),
+        totalPosts,
+        limit,
+      },
+    });
   } catch (error) {
-    res.status(500).json({
-      message: "Could not fetch posts",
+      res.status(500).json({
+      message: "Could not fetch posts"
     });
   }
 };
@@ -21,7 +105,9 @@ export const createPost = async (req: Request, res: Response) => {
   try {
     const { title, content, authorId, categoryId } = req.body;
 
-    const featuredImage = req.file ? `/uploads/posts/${req.file.filename}` : "";
+    const featuredImage = req.file
+      ? `/uploads/posts/${req.file.filename}`
+      : "";
 
     const post = await Post.create({
       title,
@@ -33,8 +119,12 @@ export const createPost = async (req: Request, res: Response) => {
 
     res.status(201).json(post);
   } catch (error) {
-      res.status(500).json({
-      message: "Could not create post",
+    if (req.file) {
+      deleteImage(`/uploads/posts/${req.file.filename}`);
+    }
+
+    res.status(500).json({
+      message: "Could not create post"
     });
   }
 };
@@ -46,57 +136,60 @@ export const getPostById = async (req: Request, res: Response) => {
 
     if (!post) {
       return res.status(404).json({
-        message: "Post not found",
+        message: "Post not found"
       });
     }
 
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json({
-      message: "Could not fetch post",
+      message: "Could not fetch post"
     });
   }
 };
 
 // Uppdatera ett inlägg (ändrar man bild tas den gamla bort och ersätts med den nya)
 export const updatePost = async (req: Request, res: Response) => {
+  let oldImage = "";
+
   try {
     const { title, content, categoryId } = req.body;
 
     const post = await Post.findById(req.params.id);
 
     if (!post) {
+      if (req.file) {
+        deleteImage(`/uploads/posts/${req.file.filename}`);
+      }
+
       return res.status(404).json({
-        message: "Post not found",
+        message: "Post not found"
       });
     }
 
     post.title = title;
     post.content = content;
     post.categoryId = categoryId;
-    
+
     if (req.file) {
-        if (post.featuredImage) {
-            const oldImagePath = path.join(
-                process.cwd(),
-                "src",
-                post.featuredImage.replace(/^\/+/, "")
-    );
-
-    if (fs.existsSync(oldImagePath)) {
-      fs.unlinkSync(oldImagePath);
+      oldImage = post.featuredImage;
+      post.featuredImage = `/uploads/posts/${req.file.filename}`;
     }
-  }
-
-  post.featuredImage = `/uploads/posts/${req.file.filename}`;
-}
 
     const updatedPost = await post.save();
 
+    if (req.file && oldImage) {
+      deleteImage(oldImage);
+    }
+
     res.status(200).json(updatedPost);
   } catch (error) {
+    if (req.file) {
+      deleteImage(`/uploads/posts/${req.file.filename}`);
+    }
+
     res.status(500).json({
-      message: "Could not update post",
+      message: "Could not update post"
     });
   }
 };
@@ -112,26 +205,20 @@ export const deletePost = async (req: Request, res: Response) => {
       });
     }
 
-    if (post.featuredImage) {
-      const imagePath = path.join(
-        process.cwd(),
-        "src",
-        post.featuredImage.replace(/^\/+/, "")
-      );
-
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-      }
-    }
+    const image = post.featuredImage;
 
     await post.deleteOne();
 
+    if (image) {
+      deleteImage(image);
+    }
+
     res.status(200).json({
-      message: "Post deleted successfully",
+      message: "Post deleted successfully"
     });
   } catch (error) {
     res.status(500).json({
-      message: "Could not delete post",
+      message: "Could not delete post"
     });
   }
 };
