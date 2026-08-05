@@ -1,35 +1,41 @@
-/*Jag(Katrina) hade problem med att ansluta till MongoDB Atlas på grund av DNS-problem, så jag lade till en funktion för att använda Google DNS om det behövs. 
-Om ni får likadana problem så lägg till true i USE_GOOGLE_DNS i er .env-fil. Annars behöver ni inte göra något*/
 import dns from "dns";
 import dotenv from "dotenv";
-import { connectDB } from "./config/db";
-import path from "path";
 import express from "express";
-dotenv.config();
+import path from "path";
 
+import { connectDB } from "./config/db";
+import { errorHandler } from "./middleware/errorMiddleware";
 import postRoutes from "./routes/postRoutes";
 
-const app = express();
-app.use(express.json());
-app.use("/api/posts", postRoutes);
-app.use("/uploads", express.static(path.join(process.cwd(), "src/uploads")));
+dotenv.config();
 
-const PORT = process.env.PORT || 5000;
-
-//TEST
-app.get("/api/test", (req, res) => {
-  res.json({
-    message: "BloggPortalen API works!",
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
+/*
+Katrina hade problem med att ansluta till MongoDB Atlas på grund av DNS-problem.
+Om samma problem uppstår kan USE_GOOGLE_DNS=true läggas till i .env-filen.
+Annars behöver inget ändras.
+*/
 if (process.env.USE_GOOGLE_DNS === "true") {
   dns.setServers(["8.8.8.8"]);
   console.log("Using Google DNS for MongoDB");
 }
 
-connectDB();
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(express.json());
+app.use(
+  "/uploads",
+  express.static(path.join(process.cwd(), "src/uploads"))
+);
+app.use("/api/posts", postRoutes);
+app.use(errorHandler);
+
+const startServer = async () => {
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
+
+startServer();
