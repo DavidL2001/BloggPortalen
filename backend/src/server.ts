@@ -6,6 +6,8 @@ import path from "path";
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middleware/errorMiddleware";
 import postRoutes from "./routes/postRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
+import "./models/User";
 
 dotenv.config();
 
@@ -28,6 +30,7 @@ app.use(
   express.static(path.join(process.cwd(), "src/uploads"))
 );
 app.use("/api/posts", postRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use(errorHandler);
 
 const startServer = async () => {

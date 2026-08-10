@@ -11,7 +11,7 @@ export const errorHandler = (
   if (error instanceof multer.MulterError) {
     if (error.code === "LIMIT_FILE_SIZE") {
       return res.status(400).json({
-        message: "Image must be smaller than 5 MB"
+        message: "Bilden är för stor. Maxstorlek är 5 MB"
       });
     }
 
@@ -20,7 +20,7 @@ export const errorHandler = (
     });
   }
 
-  if (error.message === "Only JPEG, PNG and WebP images are allowed") {
+  if (error.message === "Bara bilder av typen JPEG, PNG och WebP är tillåtna") {
     return res.status(400).json({
       message: error.message,
     });
@@ -29,6 +29,6 @@ export const errorHandler = (
   console.error(error);
 
   return res.status(500).json({
-    message: "Internal server error"
+    message: "Intern serverfel. Vänligen försök igen.",
   });
 };

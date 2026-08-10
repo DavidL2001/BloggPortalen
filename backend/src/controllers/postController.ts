@@ -80,6 +80,8 @@ export const getPosts = async (req: Request, res: Response) => {
     const skip = (page - 1) * limit;
     const totalPosts = await Post.countDocuments(filter);
     const posts = await Post.find(filter)
+      .populate("authorId", "username")
+      .populate("categoryId", "name description")
       .sort(sortOption)
       .skip(skip)
       .limit(limit);
@@ -94,8 +96,9 @@ export const getPosts = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
+    console.error("Error fetching posts:", error);
       res.status(500).json({
-      message: "Could not fetch posts"
+      message: "Kunde inte hämta inläggen"
     });
   }
 };
@@ -124,7 +127,7 @@ export const createPost = async (req: Request, res: Response) => {
     }
 
     res.status(500).json({
-      message: "Could not create post"
+      message: "Kunde inte skapa inlägget"
     });
   }
 };
@@ -132,18 +135,22 @@ export const createPost = async (req: Request, res: Response) => {
 // Hämta ett inlägg med ID
 export const getPostById = async (req: Request, res: Response) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id)
+      .populate("authorId", "username")
+      .populate("categoryId", "name description");
 
     if (!post) {
       return res.status(404).json({
-        message: "Post not found"
+        message: "Inlägget hittades inte",
       });
     }
 
     res.status(200).json(post);
   } catch (error) {
+    console.error("Error fetching post:", error);
+
     res.status(500).json({
-      message: "Could not fetch post"
+      message: "Kunde inte hämta inlägget",
     });
   }
 };
@@ -163,7 +170,7 @@ export const updatePost = async (req: Request, res: Response) => {
       }
 
       return res.status(404).json({
-        message: "Post not found"
+        message: "Inlägget hittades inte"
       });
     }
 
@@ -189,7 +196,7 @@ export const updatePost = async (req: Request, res: Response) => {
     }
 
     res.status(500).json({
-      message: "Could not update post"
+      message: "Kunde inte uppdatera inlägget"
     });
   }
 };
@@ -201,7 +208,7 @@ export const deletePost = async (req: Request, res: Response) => {
 
     if (!post) {
       return res.status(404).json({
-        message: "Post not found",
+        message: "Inlägget hittades inte"
       });
     }
 
@@ -214,11 +221,11 @@ export const deletePost = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({
-      message: "Post deleted successfully"
+      message: "Inlägget har tagits bort"
     });
   } catch (error) {
     res.status(500).json({
-      message: "Could not delete post"
+      message: "Kunde inte ta bort inlägget"
     });
   }
 };
