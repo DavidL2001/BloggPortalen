@@ -11,7 +11,7 @@ export const validateObjectId = (
 
   if (typeof id !== "string" || !mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({
-      message: "Invalid post ID"
+      message: "Ogiltigt ID"
     });
   }
 

@@ -37,7 +37,7 @@ export const validatePostQuery = (
     Number(page) < 1)
 ) {
   return res.status(400).json({
-    message: "Page must be a positive number"
+    message: "Sidnumret måste vara ett heltal större än 0"
   });
 }
 
@@ -50,7 +50,7 @@ if (
     Number(limit) > 50)
 ) {
   return res.status(400).json({
-    message: "Limit must be an number between 1 and 50"
+    message: "Gränsen för inlägg per sida måste vara ett heltal mellan 1 och 50"
   });
 }
 

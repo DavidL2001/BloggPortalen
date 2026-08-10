@@ -26,7 +26,7 @@ const fileFilter: multer.Options["fileFilter"] = (req, file, cb) => {
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Only JPEG, PNG and WebP images are allowed"));
+    cb(new Error("Bara bilder av typen JPEG, PNG och WebP är tillåtna"));
   }
 };
 
