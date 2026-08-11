@@ -106,7 +106,7 @@ export const getPosts = async (req: Request, res: Response) => {
 // Skapa ett nytt inlägg
 export const createPost = async (req: Request, res: Response) => {
   try {
-    const { title, content, authorId, categoryId } = req.body;
+    const { title, content, categoryId } = req.body;
 
     const featuredImage = req.file
       ? `/uploads/posts/${req.file.filename}`
@@ -115,7 +115,7 @@ export const createPost = async (req: Request, res: Response) => {
     const post = await Post.create({
       title,
       content,
-      authorId,
+      authorId: req.user._id,
       categoryId,
       featuredImage,
     });

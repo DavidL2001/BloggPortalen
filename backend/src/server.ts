@@ -10,6 +10,7 @@ import { errorHandler } from './middleware/errorMiddleware';
 import authRoutes from './routes/authRoutes';
 import postRoutes from './routes/postRoutes';
 import categoryRoutes from './routes/categoryRoutes';
+import likeRoutes from './routes/likeRoutes';
 import './models/User';
 
 /*
@@ -35,6 +36,7 @@ app.use(
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
+app.use("/api/posts", likeRoutes);
 app.use('/api/categories', categoryRoutes);
 
 app.get('/api/health', (req: Request, res: Response) => {
