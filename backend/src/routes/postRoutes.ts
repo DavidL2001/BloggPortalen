@@ -3,6 +3,8 @@ import { uploadPostImage } from "../middleware/uploadMiddleware";
 import { validateObjectId } from "../middleware/validateObjectId";
 import { validateCategory } from "../middleware/validateCategory";
 import { validatePostQuery } from "../middleware/validatePostQuery";
+import { protect } from "../middleware/authMiddleware"; 
+import { authPostOwner } from "../middleware/authPostOwner";
 import { 
     getPosts,
     getPostById,
@@ -15,8 +17,8 @@ const router = express.Router();
 
 router.get("/", validatePostQuery, getPosts);
 router.get("/:id", validateObjectId, getPostById);
-router.post("/", validateCategory, uploadPostImage.single("image"), createPost);
-router.put("/:id", validateObjectId, validateCategory, uploadPostImage.single("image"), updatePost);
-router.delete("/:id", validateObjectId, deletePost);
+router.post("/", protect, uploadPostImage.single("image"), validateCategory,createPost);
+router.put("/:id", protect, validateObjectId, authPostOwner, uploadPostImage.single("image"), validateCategory, updatePost);
+router.delete("/:id", protect, validateObjectId, authPostOwner, deletePost);
 
 export default router;
