@@ -1,6 +1,14 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
-const postSchema = new Schema(
+export interface IPost {
+  title: string;
+  content: string;
+  featuredImage: string;
+  authorId: Types.ObjectId;
+  categoryId: Types.ObjectId;
+}
+
+const postSchema = new Schema<IPost>(
   {
     title: {
       type: String,
@@ -35,9 +43,4 @@ const postSchema = new Schema(
   }
 );
 
-postSchema.index({
-  title: "text",
-  content: "text",
-});
-
-export const Post = model("Post", postSchema);
+export const Post = model<IPost>("Post", postSchema);
