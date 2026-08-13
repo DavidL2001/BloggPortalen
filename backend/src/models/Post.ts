@@ -4,6 +4,7 @@ export interface IPost {
   title: string;
   content: string;
   featuredImage: string;
+  altText: string;
   authorId: Types.ObjectId;
   categoryId: Types.ObjectId;
 }
@@ -24,6 +25,14 @@ const postSchema = new Schema<IPost>(
     featuredImage: {
       type: String,
       default: "",
+    },
+
+// Tillagd alt text-fält för att lagra text för bilder, vilket är viktigt för tillgänglighet och SEO.
+    altText: {
+      type: String,
+      default: "",
+      trim: true,
+      maxLength: 200,
     },
 
     authorId: {
