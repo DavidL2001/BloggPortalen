@@ -106,7 +106,18 @@ export const getPosts = async (req: Request, res: Response) => {
 // Skapa ett nytt inlägg
 export const createPost = async (req: Request, res: Response) => {
   try {
-    const { title, content, categoryId } = req.body;
+    const { title, content, categoryId, altText } = req.body;
+
+    if (
+      req.file &&
+      (!altText || typeof altText !== "string" || !altText.trim())
+    ) {
+      deleteImage(`/uploads/posts/${req.file.filename}`);
+
+      return res.status(400).json({
+        message: "Du behöver ange alternativ text för bilden"
+      });
+    }
 
     const featuredImage = req.file
       ? `/uploads/posts/${req.file.filename}`
@@ -118,6 +129,7 @@ export const createPost = async (req: Request, res: Response) => {
       authorId: req.user._id,
       categoryId,
       featuredImage,
+      altText: req.file ? altText.trim() : "" // Alternativ text behövs bara om en bild laddas upp
     });
 
     res.status(201).json(post);
@@ -160,7 +172,7 @@ export const updatePost = async (req: Request, res: Response) => {
   let oldImage = "";
 
   try {
-    const { title, content, categoryId } = req.body;
+    const { title, content, categoryId, altText } = req.body;
 
     const post = await Post.findById(req.params.id);
 
@@ -179,8 +191,21 @@ export const updatePost = async (req: Request, res: Response) => {
     post.categoryId = categoryId;
 
     if (req.file) {
+      if (
+        !altText ||
+        typeof altText !== "string" ||
+        !altText.trim()
+      ) {
+        deleteImage(`/uploads/posts/${req.file.filename}`);
+
+        return res.status(400).json({
+          message: "Du behöver ange alternativ text för bilden"
+        });
+      }
+
       oldImage = post.featuredImage;
       post.featuredImage = `/uploads/posts/${req.file.filename}`;
+      post.altText = altText.trim();
     }
 
     const updatedPost = await post.save();
