@@ -1,4 +1,4 @@
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './components/context/ThemeContext'
 import { AuthProvider } from './contexts/AuthContext'
 import { useAuth } from './hooks/useAuth'
@@ -6,6 +6,11 @@ import Auth from './components/Auth'
 import Dashboard from './components/Dashboard'
 import Navbar from './components/layout/navbar'
 import Sidebar from './components/layout/sidebar'
+import CreatePost from './pages/CreatePost'
+import PostDetails from './pages/PostDetails'
+import UpdatePost from './pages/EditPost'
+import Posts from './pages/Posts'
+import MyPosts from './pages/MyPosts'
 import './App.css'
 
 function AppContent() {
@@ -23,13 +28,29 @@ function AppContent() {
     return <Auth />
   }
 
-  return (
-    <>
-      <Navbar />
+return (
+  <>
+    <Navbar />
+
+  {/* Behövde wrappa i app-layout för att få rätt layout (annars täckte det hela content-area) */}
+    <div className="app-layout">
       <Sidebar />
-      <Dashboard />
-    </>
-  )
+
+      <main className="app-content">
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/posts/new" element={<CreatePost />} />
+          <Route path="/dashboard/posts" element={<MyPosts />} />
+
+          <Route path="/posts" element={<Posts />} />
+          <Route path="/posts/:id" element={<PostDetails />} />
+          <Route path="/posts/:id/edit" element={<UpdatePost />} />
+          
+        </Routes>
+      </main>
+    </div>
+  </>
+)
 }
 
 function App() {

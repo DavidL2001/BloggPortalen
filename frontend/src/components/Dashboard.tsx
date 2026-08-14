@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -32,17 +33,43 @@ export default function Dashboard() {
           <span>BloggPortalen</span>
         </div>
 
-        <nav className="dashboard__nav">
-          <button
-            className="dashboard__nav-item"
-            aria-current="page"
-          >
-            📊 Dashboard
-          </button>
-          <button className="dashboard__nav-item">Mina inlägg</button>
-          <button className="dashboard__nav-item">Andra bloggar</button>
-          <button className="dashboard__nav-item">Inställningar</button>
-        </nav>
+        <nav className="dashboard__nav" aria-label="Dashboard navigation">
+  <Link
+    className="dashboard__nav-item"
+    to="/dashboard"
+    aria-current="page"
+  >
+    📊 Dashboard
+  </Link>
+
+  <Link
+    className="dashboard__nav-item"
+    to="/dashboard/posts"
+  >
+    Mina inlägg
+  </Link>
+
+  <Link
+    className="dashboard__nav-item"
+    to="/dashboard/posts/new"
+  >
+    Skapa inlägg
+  </Link>
+
+  <Link
+    className="dashboard__nav-item"
+    to="/posts"
+  >
+    Alla bloggar
+  </Link>
+
+  <Link
+    className="dashboard__nav-item"
+    to="/profile"
+  >
+    Inställningar
+  </Link>
+</nav>
 
         <button
           className="dashboard__logout"
