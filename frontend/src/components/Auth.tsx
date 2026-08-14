@@ -5,7 +5,10 @@ import { login, register } from '../api/auth';
 
 export default function Auth() {
   const { login: authLogin } = useAuth();
-  const { request, loading, error: fetchError } = useFetch();
+
+
+  const { loading, error: fetchError } = useFetch();
+
 
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [username, setUsername] = useState('');
