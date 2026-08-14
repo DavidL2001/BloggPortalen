@@ -5,7 +5,8 @@ import styles from './sidebar.module.css'
 const dashboardItems = [
     { label: 'Dashboard', to: '/dashboard' },
     { label: 'Profil info', to: '/profile' },
-    { label: 'Skapa Inlägg', to: '/posts' },
+    { label: 'Mina Inlägg', to: '/dashboard/posts' },
+    { label: 'Skapa Inlägg', to: '/dashboard/posts/new' },
     { label: 'Statistik', to: '/stats' }
 ]
 
