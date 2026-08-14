@@ -6,7 +6,9 @@ import { login, register } from '../api/auth';
 export default function Auth() {
   const { login: authLogin } = useAuth();
 
+
   const { loading, error: fetchError } = useFetch();
+
 
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [username, setUsername] = useState('');
@@ -14,7 +16,6 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // usecallback för att inte skapa ny handlesubmit på varje render..
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -29,7 +30,6 @@ export default function Auth() {
           result = await login(email, password);
         }
 
-        // Spara i context och localstorage
         authLogin(
           {
             _id: result._id,
@@ -57,107 +57,124 @@ export default function Auth() {
   }, [mode]);
 
   return (
-    <div role="main" aria-labelledby="auth-title">
-      <h1 id="auth-title">
-        {mode === 'login' ? 'Logga in' : 'Registrera'}
-      </h1>
+    <div className="auth" role="main" aria-labelledby="auth-title">
+      <div className="auth__container">
+        <div className="auth__header">
+          <h1 id="auth-title">
+            {mode === 'login' ? 'Logga in' : 'Registrera dig'}
+          </h1>
+          <p>
+            {mode === 'login'
+              ? 'Välkommen tillbaka till BloggPortalen'
+              : 'Skapa ett nytt konto och börja blogga'}
+          </p>
+        </div>
 
-      <form onSubmit={handleSubmit} noValidate>
-        {mode === 'register' && (
-          <div>
-            <label htmlFor="username">
-              Användarnamn <span aria-label="obligatoriskt fält">*</span>
+        <form onSubmit={handleSubmit} noValidate className="auth__form">
+          {mode === 'register' && (
+            <div
+              className={`auth__form-group ${error ? 'error' : ''}`}
+              key="username-field"
+            >
+              <label htmlFor="username">
+                Användarnamn <span className="required">*</span>
+              </label>
+              <input
+                id="username"
+                type="text"
+                placeholder="Din användarnamn"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                minLength={3}
+                aria-required="true"
+                aria-describedby={error ? 'error-message' : undefined}
+              />
+            </div>
+          )}
+
+          <div className="auth__form-group">
+            <label htmlFor="email">
+              E-post <span className="required">*</span>
             </label>
             <input
-              id="username"
-              type="text"
-              placeholder="Anna Andersson"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="email"
+              type="email"
+              placeholder="din@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              minLength={3}
               aria-required="true"
               aria-describedby={error ? 'error-message' : undefined}
             />
           </div>
-        )}
 
-        <div>
-          <label htmlFor="email">
-            E-post <span aria-label="obligatoriskt fält">*</span>
-          </label>
-          <input
-            id="email"
-            type="email"
-            placeholder="namn@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            aria-required="true"
-            aria-describedby={error ? 'error-message' : undefined}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="password">
-            Lösenord <span aria-label="obligatoriskt fält">*</span>
-          </label>
-          <input
-            id="password"
-            type="password"
-            placeholder="Minst 6 tecken"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-
-            required
-            minLength={6}
-            aria-required="true"
-            aria-describedby={error ? 'error-message' : undefined}
-          />
-        </div>
-
-        {(error || fetchError) && (
-
-          <div
-            id="error-message"
-            role="alert"
-            aria-live="polite"
-            style={{ color: '#d32f2f', marginBottom: '1rem' }}
-          >
-            {error || fetchError}
+          <div className="auth__form-group">
+            <label htmlFor="password">
+              Lösenord <span className="required">*</span>
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder={mode === 'register' ? 'Minst 6 tecken' : 'Ditt lösenord'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              aria-required="true"
+              aria-describedby={error ? 'error-message' : undefined}
+            />
           </div>
-        )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          aria-busy={loading}
+          {(error || fetchError) && (
+            <div
+              id="error-message"
+              className="auth__error"
+              role="alert"
+              aria-live="polite"
+            >
+              <span>⚠️</span>
+              <span>{error || fetchError}</span>
+            </div>
+          )}
 
-        >
-          {loading
-            ? 'Bearbetar...'
-            : mode === 'login'
-              ? 'Logga in'
-              : 'Skapa konto'}
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="auth__button"
+            disabled={loading}
+            aria-busy={loading}
+          >
+            {loading ? (
+              <>
+                <span className="auth__loading" />
+                <span className="auth__loading" />
+                <span className="auth__loading" />
+              </>
+            ) : mode === 'login' ? (
+              'Logga in'
+            ) : (
+              'Skapa konto'
+            )}
+          </button>
+        </form>
 
-      <button
-        onClick={handleToggleMode}
-
-        type="button"
-        aria-label={
-          mode === 'login'
-            ? 'Gå till registreringssida'
-            : 'Gå till inloggningssida'
-        }
-        style={{ marginTop: '1rem' }}
-      >
-        {mode === 'login'
-          ? 'Har inget konto? Registrera dig'
-
-          : 'Har redan konto? Logga in'}
-      </button>
+        <div className="auth__toggle">
+          <span>
+            {mode === 'login' ? 'Ingen konto ännu?' : 'Har redan konto?'}
+          </span>
+          <button
+            type="button"
+            onClick={handleToggleMode}
+            aria-label={
+              mode === 'login'
+                ? 'Gå till registreringssida'
+                : 'Gå till inloggningssida'
+            }
+          >
+            {mode === 'login' ? 'Registrera dig här' : 'Logga in här'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

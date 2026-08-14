@@ -12,6 +12,7 @@ import postRoutes from './routes/postRoutes';
 import categoryRoutes from './routes/categoryRoutes';
 import likeRoutes from './routes/likeRoutes';
 import './models/User';
+import commentRoutes from './routes/commentRoute';
 
 /*
   Katrina: Löser DNS-problem vid anslutning till MongoDB Atlas.
@@ -37,7 +38,9 @@ app.use(
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use("/api/posts", likeRoutes);
+app.use('/api/posts', commentRoutes);
 app.use('/api/categories', categoryRoutes);
+
 
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok' });
