@@ -16,11 +16,15 @@ export function useFetch() {
     setLoading(true);
     setError(null);
 
+    //Behövde redigera för att funka med FormData (bilder)
     try {
       const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
         ...(options?.headers as Record<string, string> || {}),
       };
+      
+      if (!(options?.body instanceof FormData)) {
+        headers["Content-Type"] = "application/json";
+      }
 
       // Lägg till Authorization-header om token finns
       if (options?.token) {

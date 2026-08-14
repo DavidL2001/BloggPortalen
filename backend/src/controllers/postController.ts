@@ -11,6 +11,7 @@ type PostFilter = {
     content?: { $regex: string; $options: string };
   }[];
   categoryId?: string | Types.ObjectId;
+  authorId?: string | Types.ObjectId;
 };
 
 // Ser till att filer som laddas upp tas bort om något går fel i processen, t.ex. om det inte går att skapa ett inlägg.
@@ -39,6 +40,11 @@ export const getPosts = async (req: Request, res: Response) => {
         ? req.query.category
         : undefined;
 
+    const author =
+      typeof req.query.author === "string"
+        ? req.query.author
+        : undefined;
+
     const sort =
       typeof req.query.sort === "string"
         ? req.query.sort
@@ -65,6 +71,9 @@ export const getPosts = async (req: Request, res: Response) => {
 
     if (category) {
       filter.categoryId = category;
+    }
+    if (author) {
+      filter.authorId = author;
     }
 
     let sortOption: { createdAt: 1 | -1 } = {
@@ -205,6 +214,8 @@ export const updatePost = async (req: Request, res: Response) => {
 
       oldImage = post.featuredImage;
       post.featuredImage = `/uploads/posts/${req.file.filename}`;
+      post.altText = altText.trim();
+    } else if (altText !== undefined) {
       post.altText = altText.trim();
     }
 
