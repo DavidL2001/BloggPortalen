@@ -1,14 +1,13 @@
 import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useFetch } from '../hooks/useFetch';
 import { login, register } from '../api/auth';
 
 export default function Auth() {
+  const navigate = useNavigate();
   const { login: authLogin } = useAuth();
-
-
-  const { loading, error: fetchError } = useFetch();
-
+  const { request, loading, error: fetchError } = useFetch();
 
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [username, setUsername] = useState('');
@@ -41,11 +40,14 @@ export default function Auth() {
           },
           result.token
         );
+
+        // Navigera till dashboard efter lyckad login
+        navigate('/dashboard');
       } catch (err: any) {
         setError(err.message || 'Något gick fel');
       }
     },
-    [mode, username, email, password, authLogin]
+    [mode, username, email, password, authLogin, navigate]
   );
 
   const handleToggleMode = useCallback(() => {

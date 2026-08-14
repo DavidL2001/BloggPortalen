@@ -1,17 +1,28 @@
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import styles from './sidebar.module.css'
 
-const navItems = [
-    { label: 'Startsida', to: '/' },
+const dashboardItems = [
     { label: 'Dashboard', to: '/dashboard' },
-    { label: 'Profil', to: '/profile' },
-    { label: 'Inlägg', to: '/posts' },
+    { label: 'Profil info', to: '/profile' },
+    { label: 'Skapa Inlägg', to: '/posts' },
     { label: 'Statistik', to: '/stats' }
+]
+
+const homeItems = [
+    { label: 'Hem', to: '/' },
+    { label: 'Inlägg', to: '/posts' },
+    { label: 'Om oss', to: '/about' },
+    { label: 'Kontakt', to: '/contact' }
 ]
 
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false)
+    const location = useLocation()
+
+    // Välj vilka items som ska visas baserat på route
+    const isHome = location.pathname === '/'
+    const navItems = isHome ? homeItems : dashboardItems
 
     return (
         <>
