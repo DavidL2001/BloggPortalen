@@ -15,6 +15,7 @@ export interface AuthContextType {
   token: string | null;
   login: (user: User, token: string) => void;
   logout: () => void;
+  updateUser: (updates: Partial<User>) => void;
   isAuthenticated: boolean;
   loading: boolean;
 }
@@ -28,8 +29,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
   const [loading, setLoading] = useState(true);
 
-  // useEffect: Hämta user data från backend när sidan laddar om och token finns
-  
   useEffect(() => {
     const initializeAuth = async () => {
       const savedToken = localStorage.getItem('token');
@@ -54,7 +53,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setToken(savedToken);
           setUser(data);
         } else {
-          // Token är ogiltig eller utgången
           localStorage.removeItem('token');
           setToken(null);
           setUser(null);
@@ -72,7 +70,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initializeAuth();
   }, []);
 
-  // usecallback för att inte skapa nya funktioner på varje render
   const login = useCallback((userData: User, authToken: string) => {
     setUser(userData);
     setToken(authToken);
@@ -85,17 +82,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('token');
   }, []);
 
-  // usememo för att inte skapa nytt context value på varje render.
+  // Uppdaterar delar av user-objektet lokalt, t.ex. efter profilredigering
+  const updateUser = useCallback((updates: Partial<User>) => {
+    setUser((prev) => (prev ? { ...prev, ...updates } : prev));
+  }, []);
+
   const value = useMemo(
     () => ({
       user,
       token,
       login,
       logout,
+      updateUser,
       isAuthenticated: !!token && !!user,
       loading,
     }),
-    [user, token, login, logout, loading]
+    [user, token, login, logout, updateUser, loading]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

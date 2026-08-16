@@ -12,7 +12,8 @@ export default function Home() {
       <Navbar />
       <Sidebar />
 
-      <main className="home__content" role="main">
+      <main className="home__content dashboard-layout__content"  role="main">
+
         <section className="home__hero">
           <h1>Välkommen till BloggPortalen</h1>
 
