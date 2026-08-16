@@ -13,33 +13,37 @@ export default function PostCard({ post }: PostCardProps) {
     : null;
 
   return (
-    <article>
+    <article className="post-card">
+      <div className="post-card__info">
+        <h2 className="post-card__title">{post.title}</h2>
+
+        <p className="post-card__author">
+          Skrivet av <strong>{post.authorId.username}</strong>
+        </p>
+
+        <p className="post-card__category">
+          Kategori: <strong>{post.categoryId.name}</strong>
+        </p>
+
+        <p className="post-card__date">
+          {new Date(post.createdAt).toLocaleDateString("sv-SE")}
+        </p>
+      </div>
+
       {imageUrl && (
         <img
+          className="post-card__image"
           src={imageUrl}
           alt={post.altText}
         />
       )}
 
-      <div>
-        <h2>{post.title}</h2>
-
-        <p>
-          Skrivet av <strong>{post.authorId.username}</strong>
-        </p>
-
-        <p>
-          Kategori: <strong>{post.categoryId.name}</strong>
-        </p>
-
-        <p>
-          {new Date(post.createdAt).toLocaleDateString("sv-SE")}
-        </p>
-
-        <Link to={`/posts/${post._id}`}>
-          Läs inlägget
-        </Link>
-      </div>
+      <Link
+        className="post-card__link"
+        to={`/posts/${post._id}`}
+      >
+        Läs hela inlägget
+      </Link>
     </article>
   );
 }
