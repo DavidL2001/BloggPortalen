@@ -13,7 +13,7 @@ export default function PostList({ posts }: PostListProps) {
   }
 
   return (
-    <section aria-label="Alla inlägg">
+    <section className="post-list" aria-label="Alla inlägg">
       {posts.map((post) => (
         <PostCard
           key={post._id}
