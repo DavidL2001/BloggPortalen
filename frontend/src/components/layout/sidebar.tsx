@@ -27,6 +27,9 @@ export default function Sidebar() {
 
     return (
         <>
+        {isOpen && (
+            <div className={styles.backdrop} onClick={closeSidebar} aria-hidden="true"/>
+        )}
             <nav
                 id="main-sidebar"
                 className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}

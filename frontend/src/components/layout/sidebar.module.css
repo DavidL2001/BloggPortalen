@@ -64,8 +64,22 @@
 
     @media (max-width: 480px) {
         .sidebar {
-            top: 120px;
-            height: calc(100vh - 120px);
+            top: 105px;
+            height: calc(100vh - 105px);
         }
+    }
+}
+
+.backdrop {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 9;
     }
 }

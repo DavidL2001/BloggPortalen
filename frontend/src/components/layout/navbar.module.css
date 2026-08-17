@@ -16,6 +16,12 @@
     text-decoration: none;
 }
 
+.logo:hover,
+.logo:active,
+.logo:visited {
+    color: var(--color-text);
+}
+
 /*radar ihop theme knappen, hälsningen och logga ut*/
 .actions {
     display: flex;
