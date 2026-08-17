@@ -19,7 +19,7 @@ const deleteImage = (imagePath: string) => {
   const fullPath = path.join(
     process.cwd(),
     "src",
-    imagePath.replace(/^\/+/, "")
+    imagePath.replace(/^\/+/, ""),
   );
 
   if (fs.existsSync(fullPath)) {
@@ -31,34 +31,22 @@ const deleteImage = (imagePath: string) => {
 export const getPosts = async (req: Request, res: Response) => {
   try {
     const search =
-      typeof req.query.search === "string"
-        ? req.query.search
-        : undefined;
+      typeof req.query.search === "string" ? req.query.search : undefined;
 
     const category =
-      typeof req.query.category === "string"
-        ? req.query.category
-        : undefined;
+      typeof req.query.category === "string" ? req.query.category : undefined;
 
     const author =
-      typeof req.query.author === "string"
-        ? req.query.author
-        : undefined;
+      typeof req.query.author === "string" ? req.query.author : undefined;
 
     const sort =
-      typeof req.query.sort === "string"
-        ? req.query.sort
-        : undefined;
+      typeof req.query.sort === "string" ? req.query.sort : undefined;
 
     const page =
-      typeof req.query.page === "string"
-        ? Number(req.query.page)
-        : 1;
+      typeof req.query.page === "string" ? Number(req.query.page) : 1;
 
     const limit =
-      typeof req.query.limit === "string"
-        ? Number(req.query.limit)
-        : 10;
+      typeof req.query.limit === "string" ? Number(req.query.limit) : 10;
 
     const filter: PostFilter = {};
 
@@ -106,8 +94,8 @@ export const getPosts = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error fetching posts:", error);
-      res.status(500).json({
-      message: "Kunde inte hämta inläggen"
+    res.status(500).json({
+      message: "Kunde inte hämta inläggen",
     });
   }
 };
@@ -124,13 +112,11 @@ export const createPost = async (req: Request, res: Response) => {
       deleteImage(`/uploads/posts/${req.file.filename}`);
 
       return res.status(400).json({
-        message: "Du behöver ange alternativ text för bilden"
+        message: "Du behöver ange alternativ text för bilden",
       });
     }
 
-    const featuredImage = req.file
-      ? `/uploads/posts/${req.file.filename}`
-      : "";
+    const featuredImage = req.file ? `/uploads/posts/${req.file.filename}` : "";
 
     const post = await Post.create({
       title,
@@ -138,7 +124,7 @@ export const createPost = async (req: Request, res: Response) => {
       authorId: req.user._id,
       categoryId,
       featuredImage,
-      altText: req.file ? altText.trim() : "" // Alternativ text behövs bara om en bild laddas upp
+      altText: req.file ? altText.trim() : "", // Alternativ text behövs bara om en bild laddas upp
     });
 
     res.status(201).json(post);
@@ -148,7 +134,7 @@ export const createPost = async (req: Request, res: Response) => {
     }
 
     res.status(500).json({
-      message: "Kunde inte skapa inlägget"
+      message: "Kunde inte skapa inlägget",
     });
   }
 };
@@ -191,7 +177,7 @@ export const updatePost = async (req: Request, res: Response) => {
       }
 
       return res.status(404).json({
-        message: "Inlägget hittades inte"
+        message: "Inlägget hittades inte",
       });
     }
 
@@ -200,15 +186,11 @@ export const updatePost = async (req: Request, res: Response) => {
     post.categoryId = categoryId;
 
     if (req.file) {
-      if (
-        !altText ||
-        typeof altText !== "string" ||
-        !altText.trim()
-      ) {
+      if (!altText || typeof altText !== "string" || !altText.trim()) {
         deleteImage(`/uploads/posts/${req.file.filename}`);
 
         return res.status(400).json({
-          message: "Du behöver ange alternativ text för bilden"
+          message: "Du behöver ange alternativ text för bilden",
         });
       }
 
@@ -232,7 +214,7 @@ export const updatePost = async (req: Request, res: Response) => {
     }
 
     res.status(500).json({
-      message: "Kunde inte uppdatera inlägget"
+      message: "Kunde inte uppdatera inlägget",
     });
   }
 };
@@ -244,7 +226,7 @@ export const deletePost = async (req: Request, res: Response) => {
 
     if (!post) {
       return res.status(404).json({
-        message: "Inlägget hittades inte"
+        message: "Inlägget hittades inte",
       });
     }
 
@@ -257,11 +239,11 @@ export const deletePost = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({
-      message: "Inlägget har tagits bort"
+      message: "Inlägget har tagits bort",
     });
   } catch (error) {
     res.status(500).json({
-      message: "Kunde inte ta bort inlägget"
+      message: "Kunde inte ta bort inlägget",
     });
   }
 };

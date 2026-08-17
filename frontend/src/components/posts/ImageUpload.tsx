@@ -42,7 +42,10 @@ export default function ImageUpload({
       </div>
 
       {image && (
-        <p> Vald bild: <strong>{image.name}</strong> </p>
+        <p>
+          {" "}
+          Vald bild: <strong>{image.name}</strong>{" "}
+        </p>
       )}
     </fieldset>
   );
