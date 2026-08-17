@@ -1,30 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { useDeletePost } from "../../hooks/useDeletePost";
 import { useAuth } from "../../hooks/useAuth";
+import LikeButton from "./LikeButton";
 
 interface PostActionsProps {
   postId: string;
   authorId: string;
 }
 
-export default function PostActions({
-  postId,
-  authorId,
-}: PostActionsProps) {
+export default function PostActions({ postId, authorId }: PostActionsProps) {
   const navigate = useNavigate();
   const { token, user } = useAuth();
 
-  const {
-    submitDelete,
-    loading,
-    error,
-  } = useDeletePost(token);
+  const { submitDelete, loading, error } = useDeletePost(token);
 
   const isOwner = user?._id === authorId;
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
-      "Är du säker på att du vill ta bort inlägget?"
+      "Är du säker på att du vill ta bort inlägget?",
     );
 
     if (!confirmed) {
@@ -41,10 +35,9 @@ export default function PostActions({
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => navigate("/posts")}
-      >
+      <LikeButton postId={postId} />
+
+      <button type="button" onClick={() => navigate("/posts")}>
         Tillbaka till inlägg
       </button>
 
@@ -53,21 +46,17 @@ export default function PostActions({
           <button
             type="button"
             onClick={() => navigate(`/posts/${postId}/edit`)}
-          > Redigera </button>
-
-          <button
-            type="button"
-            onClick={handleDelete}
-            disabled={loading}
           >
+            Redigera
+          </button>
+
+          <button type="button" onClick={handleDelete} disabled={loading}>
             {loading ? "Tar bort..." : "Ta bort"}
           </button>
         </>
       )}
 
-      {error && (
-        <p role="alert">{error}</p>
-      )}
+      {error && <p role="alert">{error}</p>}
     </div>
   );
 }

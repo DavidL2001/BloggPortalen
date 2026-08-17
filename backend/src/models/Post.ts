@@ -27,7 +27,7 @@ const postSchema = new Schema<IPost>(
       default: "",
     },
 
-// Tillagd alt text-fält för att lagra text för bilder, vilket är viktigt för tillgänglighet och SEO.
+    // Tillagd alt text-fält för att lagra text för bilder, vilket är viktigt för tillgänglighet och SEO.
     altText: {
       type: String,
       default: "",
@@ -49,7 +49,7 @@ const postSchema = new Schema<IPost>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const Post = model<IPost>("Post", postSchema);
