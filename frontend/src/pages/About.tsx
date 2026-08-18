@@ -11,7 +11,7 @@ export default function About() {
   };
 
   return (
-    <main className="about dashboard-layout__content" role="main">
+    <main className="about" role="main">
       <section className="about__hero">
         <p className="about__eyebrow">Om BloggPortalen</p>
 
