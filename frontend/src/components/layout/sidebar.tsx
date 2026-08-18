@@ -20,8 +20,10 @@ export default function Sidebar() {
   const { isOpen, toggleSidebar, closeSidebar } = useSidebar();
   const location = useLocation();
 
-  const publicRoutes = ["/", "/about"];
-  const isPublicPage = publicRoutes.includes(location.pathname);
+  const publicRoutes = ["/", "/about", "/posts"];
+  const isPublicPage =
+    publicRoutes.includes(location.pathname) ||
+    /^\/posts\/[^/]+$/.test(location.pathname);
   const navItems = isPublicPage ? homeItems : dashboardItems;
 
   return (
