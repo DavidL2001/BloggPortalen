@@ -1,9 +1,5 @@
 .mobileBar {
     display: none;
-    position: fixed;
-    top: var(--navbar-height);
-    left: 0;
-    right: 0;
     z-index: 90;
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
@@ -80,6 +76,10 @@
 @media (max-width: 768px) {
     .mobileBar {
         display: block;
+        grid-column: 1;
+        grid-row: 2;
+        position: sticky;
+        top: var(--navbar-height);
     }
 
     .sidebar {
