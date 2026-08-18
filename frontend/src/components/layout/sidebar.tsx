@@ -16,9 +16,8 @@ const homeItems = [
     { label: 'Om oss', to: '/about' },
     { label: 'Kontakt', to: '/contact' }
 ]
-
 export default function Sidebar() {
-    const { isOpen, closeSidebar } = useSidebar()
+    const { isOpen, toggleSidebar, closeSidebar } = useSidebar()
     const location = useLocation()
 
     const isHome = location.pathname === '/'
@@ -30,7 +29,7 @@ export default function Sidebar() {
                 <button
                     type="button"
                     className={styles.toggleButton}
-                    onClick={() => setIsOpen((prev) => !prev)}
+                    onClick={toggleSidebar}
                     aria-expanded={isOpen}
                     aria-controls="main-sidebar"
                     aria-label={isOpen ? 'Stäng meny' : 'Öppna meny'}

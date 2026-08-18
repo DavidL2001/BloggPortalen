@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useFontSize } from '../context/FontSizeContext';
 import { useAuth } from '../../hooks/useAuth';
 import styles from './navbar.module.css';
@@ -13,7 +13,7 @@ export default function Navbar() {
   const location = useLocation();
   const navRef = useRef<HTMLElement>(null);
 
-  
+
   useEffect(() => {
     const el = navRef.current;
     if (!el) return;
