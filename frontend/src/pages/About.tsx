@@ -83,6 +83,7 @@ export default function About() {
         </div>
       </section>
 
+      {/* Kontakt meddelanden sparas inte utan skickar bara ett bekräftelse meddelande */}
       <section className="about__contact" aria-labelledby="contact-heading">
         <div>
           <p className="about__eyebrow">Kontakt</p>
