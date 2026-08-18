@@ -5,7 +5,6 @@
     padding: 1rem 1.5rem;
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
-    min-height: var(--navbar-height);
     box-sizing: border-box;
     flex-wrap: wrap;
     row-gap: 0.5rem;
@@ -80,32 +79,6 @@
     white-space: nowrap;
 }
 
-/* Mindre skärmar: krymp padding/gap och göm hälsningstexten
-   så raden garanterat får plats på en rad */
-@media (max-width: 640px) {
-    .navbar {
-        padding: 0.75rem 1rem;
-    }
-
-    .actions {
-        gap: 0.5rem;
-    }
-
-    .greeting {
-        display: none;
-    }
-
-    .themeButton {
-        padding: 0.4rem 0.5rem;
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 420px) {
-    .themeButton span.themeLabel {
-        display: none;
-    }
-}
 .fontControls {
     display: flex;
     align-items: center;
@@ -135,47 +108,26 @@
 
 .fontButton + .fontButton {
     border-left: 1px solid var(--color-border);
-/*wrapper för hamburgerknapp*/
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
 }
 
-/*haburgerknappen dold som standard*/
-.toggleButton {
-    display: none;
-    padding: 0.4rem 0.6rem;
-    font-size: 1.1rem;
-    background: transparent;
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: 0.385rem;
-    cursor: pointer;
-}
-
-/*mobilläge*/
-@media (max-width: 768px) {
-    .toggleButton {
-        display: inline-block;
-    }
-}
-
-@media (max-width: 480px) {
+/* Mindre skärmar: krymp padding/gap och göm hälsningstexten
+   så raden garanterat får plats på en rad */
+@media (max-width: 640px) {
     .navbar {
-        flex-wrap: wrap;
-        row-gap: 0.5rem;
         padding: 0.75rem 1rem;
     }
 
     .actions {
-        width: 100%;
-        justify-content: center;
         gap: 0.5rem;
     }
 
     .greeting {
         display: none;
+    }
+
+    .themeButton {
+        padding: 0.4rem 0.5rem;
+        font-size: 0.8rem;
     }
 }
 }

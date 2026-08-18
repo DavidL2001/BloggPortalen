@@ -1,37 +1,37 @@
-import { useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useTheme } from '../../contexts/ThemeContext';
-import { useFontSize } from '../context/FontSizeContext';
-import { useAuth } from '../../hooks/useAuth';
-import styles from './navbar.module.css';
+import { useEffect, useRef } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useTheme } from '../../contexts/ThemeContext'
+import { useFontSize } from '../../contexts/FontSizeContext'
+import { useAuth } from '../../hooks/useAuth'
+import styles from './navbar.module.css'
 
 export default function Navbar() {
-  const { theme, toggleTheme } = useTheme();
-  const { increaseFontSize, decreaseFontSize, resetFontSize, scale } = useFontSize();
-  const { logout, user, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const navRef = useRef<HTMLElement>(null);
+    const { theme, toggleTheme } = useTheme()
+    const { increaseFontSize, decreaseFontSize, resetFontSize, scale } =
+        useFontSize()
+    const { logout, user, isAuthenticated } = useAuth()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const navRef = useRef<HTMLElement>(null)
 
+    useEffect(() => {
+        const el = navRef.current
+        if (!el) return
 
-  useEffect(() => {
-    const el = navRef.current;
-    if (!el) return;
+        const updateHeight = () => {
+            document.documentElement.style.setProperty(
+                '--navbar-height',
+                `${el.offsetHeight}px`
+            )
+        }
 
-    const updateHeight = () => {
-      document.documentElement.style.setProperty(
-        '--navbar-height',
-        `${el.offsetHeight}px`
-      );
-    };
+        updateHeight()
 
-    updateHeight();
+        const observer = new ResizeObserver(updateHeight)
+        observer.observe(el)
 
-    const observer = new ResizeObserver(updateHeight);
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, []);
+        return () => observer.disconnect()
+    }, [])
 
     const handleLogout = () => {
         logout()

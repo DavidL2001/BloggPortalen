@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/navbar';
 import Sidebar from '../components/layout/sidebar';
-import Footer from '../components/layout/footer';
 import PostCard from '../components/posts/PostCard';
 import { useAuth } from '../hooks/useAuth';
 import { usePosts } from '../hooks/usePosts';
@@ -58,7 +57,6 @@ export default function Home() {
       </main>
     </div>
 
-    <Footer />
     </>
   );
 }

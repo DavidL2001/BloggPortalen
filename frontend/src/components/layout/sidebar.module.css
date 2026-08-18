@@ -95,13 +95,6 @@
     .sidebar.open {
         transform: translateX(0);
     }
-
-    @media (max-width: 480px) {
-        .sidebar {
-            top: 105px;
-            height: calc(100vh - 105px);
-        }
-    }
 }
 
 .backdrop {
