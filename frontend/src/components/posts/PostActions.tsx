@@ -34,10 +34,12 @@ export default function PostActions({ postId, authorId }: PostActionsProps) {
   };
 
   return (
-    <div>
-      <LikeButton postId={postId} />
-
-      <button type="button" onClick={() => navigate("/posts")}>
+    <div className="post-details__actions">
+      <button
+        type="button"
+        className="post-form__cancel-btn"
+        onClick={() => navigate("/posts")}
+      >
         Tillbaka till inlägg
       </button>
 
@@ -45,7 +47,17 @@ export default function PostActions({ postId, authorId }: PostActionsProps) {
         <>
           <button
             type="button"
+            className="post-details__edit-btn"
             onClick={() => navigate(`/posts/${postId}/edit`)}
+          >
+            Redigera
+          </button>
+
+          <button
+            type="button"
+            className="post-details__delete-btn"
+            onClick={handleDelete}
+            disabled={loading}
           >
             Redigera
           </button>
@@ -56,7 +68,7 @@ export default function PostActions({ postId, authorId }: PostActionsProps) {
         </>
       )}
 
-      {error && <p role="alert">{error}</p>}
+      {error && <p role="alert" className="post-form__error">{error}</p>}
     </div>
   );
 }

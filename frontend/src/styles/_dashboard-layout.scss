@@ -3,6 +3,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--color-bg-hover);
 
   @media (min-width: 769px) {
@@ -23,24 +24,26 @@
 .dashboard-layout > nav {
   grid-column: 1;
   grid-row: 2;
+  min-height: 0;
 
   @media (max-width: 768px) {
     position: fixed;
-    top: 67px;
+    top: var(--navbar-height);
     left: 0;
-    height: calc(100vh - 70px);
-    z-index: 10;
+    height: calc(100vh - var(--navbar-height));
+    z-index: 50;
+    overflow-y: auto;
 
     @media (max-width: 480px) {
-        top: 105px;
-        height: calc(100vh - 105px);
+      top: var(--navbar-height);
+      height: calc(100vh - var(--navbar-height));
     }
   }
 
   @media (min-width: 769px) {
     position: sticky;
-    top: 67px;
-    height: calc(100vh - 70px);
+    top: var(--navbar-height);
+    height: calc(100vh - var(--navbar-height));
     overflow-y: auto;
     z-index: 50;
   }
@@ -53,12 +56,26 @@
   display: flex;
   flex-direction: column;
 
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  min-height: 0;
+  min-width: 0;
+  max-height: calc(100vh - var(--navbar-height));
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    padding-top: calc(1.5rem + var(--mobile-toolbar-height));
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - var(--navbar-height));
+  }
 
   @media (min-width: 769px) {
     grid-column: 2;
     grid-row: 2;
     padding: 2rem;
-
+    max-height: calc(100vh - var(--navbar-height));
   }
 }
 

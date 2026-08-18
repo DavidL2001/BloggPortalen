@@ -12,7 +12,7 @@ export default function CategorySelect({
   onChange,
 }: CategorySelectProps) {
   return (
-    <div>
+    <div className="post-form__field">
       <label htmlFor="category">Kategorier</label>
 
       <select

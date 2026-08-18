@@ -61,4 +61,5 @@ export const createCategory = async (req: Request, res: Response) => {
       message: "Kunde inte skapa kategorin",
     });
   }
+
 };
