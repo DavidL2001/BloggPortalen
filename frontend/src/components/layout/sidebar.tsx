@@ -4,12 +4,12 @@ import { useSidebar } from '../../contexts/SidebarContext'
 import styles from './sidebar.module.css'
 
 const dashboardItems = [
-    { label: 'Dashboard', to: '/dashboard' },
-    { label: 'Profil info', to: '/profile' },
-    { label: 'Mina Inlägg', to: '/dashboard/posts' },
-    { label: 'Skapa Inlägg', to: '/dashboard/posts/new' },
-    { label: 'Statistik', to: '/stats' }
-]
+  { label: "Dashboard", to: "/dashboard" },
+  { label: "Profil info", to: "/profile" },
+  { label: "Mina Inlägg", to: "/dashboard/posts" },
+  { label: "Skapa Inlägg", to: "/dashboard/posts/new" },
+  { label: "Statistik", to: "/stats" },
+];
 
 const homeItems = [
     { label: 'Hem', to: '/' },
@@ -23,8 +23,10 @@ export default function Sidebar() {
     const mobileBarRef = useRef<HTMLDivElement>(null)
 
     // Välj vilka items som ska visas baserat på route
-    const publicRoutes = ['/', '/about']
-    const isPublicPage = publicRoutes.includes(location.pathname)
+    const publicRoutes = ['/', '/about', '/posts']
+    const isPublicPage =
+        publicRoutes.includes(location.pathname) ||
+        /^\/posts\/[^/]+$/.test(location.pathname)
     const navItems = isPublicPage ? homeItems : dashboardItems
 
     useEffect(() => {

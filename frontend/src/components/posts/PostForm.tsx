@@ -98,8 +98,8 @@ export default function PostForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form onSubmit={handleSubmit} className="post-form">
+      <div className="post-form__field">
         <label htmlFor="title">Titel</label>
 
         <input
@@ -111,7 +111,7 @@ export default function PostForm({
         />
       </div>
 
-      <div>
+      <div className="post-form__field">
         <label htmlFor="content">Innehåll</label>
 
         <textarea
@@ -124,7 +124,7 @@ export default function PostForm({
       </div>
 
       {categoryError && (
-        <p role="alert">{categoryError}</p>
+        <p role="alert" className="post-form__error">{categoryError}</p>
       )}
 
       <CategorySelect
@@ -141,7 +141,7 @@ export default function PostForm({
       />
 
       {(error || updateError) && (
-        <p role="alert">
+        <p role="alert" className="post-form__error">
           {error || updateError}
         </p>
       )}
