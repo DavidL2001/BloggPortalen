@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useSidebar } from '../../contexts/SidebarContext'
 import styles from './sidebar.module.css'
 
 const dashboardItems = [
@@ -18,7 +18,7 @@ const homeItems = [
 ]
 
 export default function Sidebar() {
-    const [isOpen, setIsOpen] = useState(false)
+    const { isOpen, closeSidebar } = useSidebar()
     const location = useLocation()
 
     // Välj vilka items som ska visas baserat på route
@@ -27,17 +27,9 @@ export default function Sidebar() {
 
     return (
         <>
-            <button
-                type="button"
-                className={styles.toggleButton}
-                onClick={() => setIsOpen((prev) => !prev)}
-                aria-expanded={isOpen}
-                aria-controls="main-sidebar"
-                aria-label={isOpen ? 'Stäng meny' : 'Öppna meny'}
-            >
-                ☰
-            </button>
-
+        {isOpen && (
+            <div className={styles.backdrop} onClick={closeSidebar} aria-hidden="true"/>
+        )}
             <nav
                 id="main-sidebar"
                 className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}
@@ -53,7 +45,7 @@ export default function Sidebar() {
                                         ? `${styles.navLink} ${styles.active}`
                                         : styles.navLink
                                 }
-                                onClick={() => setIsOpen(false)}
+                                onClick={closeSidebar}
                             >
                                 {item.label}
                             </NavLink>

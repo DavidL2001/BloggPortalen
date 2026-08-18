@@ -26,15 +26,20 @@
 
   @media (max-width: 768px) {
     position: fixed;
-    top: 0;
+    top: 67px;
     left: 0;
-    height: 100vh;
+    height: calc(100vh - 70px);
     z-index: 10;
+
+    @media (max-width: 480px) {
+        top: 105px;
+        height: calc(100vh - 105px);
+    }
   }
 
   @media (min-width: 769px) {
     position: sticky;
-    top: 70px;
+    top: 67px;
     height: calc(100vh - 70px);
     overflow-y: auto;
     z-index: 50;
@@ -47,14 +52,13 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  max-height: calc(100vh - 60px);
+
 
   @media (min-width: 769px) {
     grid-column: 2;
     grid-row: 2;
     padding: 2rem;
-    max-height: calc(100vh - 70px);
+
   }
 }
 
