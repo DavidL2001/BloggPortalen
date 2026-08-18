@@ -7,18 +7,11 @@ interface PostActionsProps {
   authorId: string;
 }
 
-export default function PostActions({
-  postId,
-  authorId,
-}: PostActionsProps) {
+export default function PostActions({ postId, authorId }: PostActionsProps) {
   const navigate = useNavigate();
   const { token, user } = useAuth();
 
-  const {
-    submitDelete,
-    loading,
-    error,
-  } = useDeletePost(token);
+  const { submitDelete, loading, error } = useDeletePost(token);
 
   const isOwner = user?._id === authorId;
 
@@ -40,9 +33,10 @@ export default function PostActions({
   };
 
   return (
-    <div>
+    <div className="post-details__actions">
       <button
         type="button"
+        className="post-form__cancel-btn"
         onClick={() => navigate("/posts")}
       >
         Tillbaka till inlägg
@@ -52,11 +46,15 @@ export default function PostActions({
         <>
           <button
             type="button"
+            className="post-details__edit-btn"
             onClick={() => navigate(`/posts/${postId}/edit`)}
-          > Redigera </button>
+          >
+            Redigera
+          </button>
 
           <button
             type="button"
+            className="post-details__delete-btn"
             onClick={handleDelete}
             disabled={loading}
           >
@@ -65,9 +63,7 @@ export default function PostActions({
         </>
       )}
 
-      {error && (
-        <p role="alert">{error}</p>
-      )}
+      {error && <p role="alert" className="post-form__error">{error}</p>}
     </div>
   );
 }

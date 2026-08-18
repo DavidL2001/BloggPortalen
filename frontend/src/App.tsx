@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ThemeProvider } from './components/context/ThemeContext'
 import { AuthProvider } from './contexts/AuthContext'
 import { useAuth } from './hooks/useAuth'
-import Auth from './components/Auth'
-import Dashboard from './components/Dashboard'
+import Auth from './pages/Auth'
+import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import Navbar from './components/layout/navbar'
 import Sidebar from './components/layout/sidebar'
 import PrivateRoute from './components/PrivateRoute'
-
+import { FontSizeProvider } from './components/context/FontSizeContext'
 import CreatePost from './pages/CreatePost'
 import PostDetails from './pages/PostDetails'
 import EditPost from './pages/EditPost'
@@ -127,19 +127,7 @@ function AppContent() {
         }
       />
 
-      {/* Statistik - skyddad */}
-      <Route
-        path="/stats"
-        element={
-          <PrivateRoute>
-            <div className="dashboard-layout">
-              <Navbar />
-              <Sidebar />
-              <Dashboard />
-            </div>
-          </PrivateRoute>
-        }
-      />
+
 
       {/* 404 */}
       <Route path="*" element={<Navigate to="/" />} />
@@ -150,11 +138,13 @@ function AppContent() {
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
-      </AuthProvider>
+      <FontSizeProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </AuthProvider>
+      </FontSizeProvider>
     </ThemeProvider>
   )
 }

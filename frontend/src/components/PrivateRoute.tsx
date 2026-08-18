@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import Auth from './Auth';
+import Auth from '../pages/Auth';
 
 interface PrivateRouteProps {
-    
+
   children: ReactNode;
 }
 

@@ -7,7 +7,7 @@ const dashboardItems = [
     { label: 'Profil info', to: '/profile' },
     { label: 'Mina Inlägg', to: '/dashboard/posts' },
     { label: 'Skapa Inlägg', to: '/dashboard/posts/new' },
-    { label: 'Statistik', to: '/stats' }
+
 ]
 
 const homeItems = [
@@ -21,22 +21,26 @@ export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false)
     const location = useLocation()
 
-    // Välj vilka items som ska visas baserat på route
     const isHome = location.pathname === '/'
     const navItems = isHome ? homeItems : dashboardItems
 
     return (
         <>
-            <button
-                type="button"
-                className={styles.toggleButton}
-                onClick={() => setIsOpen((prev) => !prev)}
-                aria-expanded={isOpen}
-                aria-controls="main-sidebar"
-                aria-label={isOpen ? 'Stäng meny' : 'Öppna meny'}
-            >
-                ☰
-            </button>
+            <div className={styles.mobileBar}>
+                <button
+                    type="button"
+                    className={styles.toggleButton}
+                    onClick={() => setIsOpen((prev) => !prev)}
+                    aria-expanded={isOpen}
+                    aria-controls="main-sidebar"
+                    aria-label={isOpen ? 'Stäng meny' : 'Öppna meny'}
+                >
+                    <span className={styles.toggleIcon}>☰</span>
+                    <span className={styles.toggleLabel}>
+                        {isOpen ? 'Stäng meny' : 'Meny'}
+                    </span>
+                </button>
+            </div>
 
             <nav
                 id="main-sidebar"

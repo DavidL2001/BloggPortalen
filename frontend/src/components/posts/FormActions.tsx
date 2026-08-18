@@ -8,12 +8,14 @@ export default function FormActions({
   onCancel,
 }: FormActionsProps) {
   return (
-    <div>
-      <button type="submit" disabled={loading}>
+    <div className="post-form__actions">
+      <button type="submit" className="post-form__submit-btn" disabled={loading}>
         {loading ? "Publicerar..." : "Publicera"}
       </button>
 
-      <button type="button" onClick={onCancel}> Avbryt </button>
+      <button type="button" className="post-form__cancel-btn" onClick={onCancel}>
+        Avbryt
+      </button>
     </div>
   );
 }
