@@ -61,16 +61,16 @@ export default function PostActions({ postId, authorId }: PostActionsProps) {
             onClick={handleDelete}
             disabled={loading}
           >
-            Redigera
-          </button>
-
-          <button type="button" onClick={handleDelete} disabled={loading}>
             {loading ? "Tar bort..." : "Ta bort"}
           </button>
         </>
       )}
 
-      {error && <p role="alert" className="post-form__error">{error}</p>}
+      {error && (
+        <p role="alert" className="post-form__error">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
