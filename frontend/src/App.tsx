@@ -8,6 +8,7 @@ import {
 import { ThemeProvider } from './contexts/ThemeContext'
 import { SidebarProvider } from './contexts/SidebarContext'
 import { AuthProvider } from './contexts/AuthContext'
+import { FontSizeProvider } from './contexts/FontSizeContext'
 import { useAuth } from './hooks/useAuth'
 import Auth from './components/Auth'
 import Dashboard from './components/Dashboard'
@@ -160,15 +161,17 @@ function AppContent() {
 
 function App() {
     return (
-        <ThemeProvider>
-            <SidebarProvider>
-                <AuthProvider>
-                    <BrowserRouter>
-                        <AppContent />
-                    </BrowserRouter>
-                </AuthProvider>
-            </SidebarProvider>
-        </ThemeProvider>
+        <FontSizeProvider>
+            <ThemeProvider>
+                <SidebarProvider>
+                    <AuthProvider>
+                        <BrowserRouter>
+                            <AppContent />
+                        </BrowserRouter>
+                    </AuthProvider>
+                </SidebarProvider>
+            </ThemeProvider>
+        </FontSizeProvider>
     )
 }
 

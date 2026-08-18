@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
+import { useFontSize } from '../../contexts/FontSizeContext'
 import { useSidebar } from '../../contexts/SidebarContext'
 import { useAuth } from '../../hooks/useAuth'
 import styles from './navbar.module.css'
@@ -10,6 +11,7 @@ export default function Navbar() {
     const { logout, user, isAuthenticated } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
+    const { increaseFontSize, decreaseFontSize } = useFontSize()
 
     const handleLogout = () => {
         logout()
@@ -42,6 +44,23 @@ export default function Navbar() {
                     className={styles.themeButton}
                 >
                     {theme === 'light' ? '🌙 Mörkt' : '☀️ Ljust'}
+                </button>
+
+                                <button
+                    type="button"
+                    onClick={decreaseFontSize}
+                    className={styles.fontSizeButton}
+                    aria-label="Minska textstorlek"
+                >
+                    A-
+                </button>
+                <button
+                    type="button"
+                    onClick={increaseFontSize}
+                    className={styles.fontSizeButton}
+                    aria-label="Öka textstorlek"
+                >
+                    A+
                 </button>
 
                 {isAuthenticated ? (
