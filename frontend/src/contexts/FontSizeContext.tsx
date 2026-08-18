@@ -1,42 +1,55 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
 
-const MIN_FONT_SIZE = 16
-const MAX_FONT_SIZE = 22
-const STEP = 2
+type FontScale = 100 | 112 | 125 | 137
 
 interface FontSizeContextType {
-    fontSize: number
+    scale: FontScale
     increaseFontSize: () => void
     decreaseFontSize: () => void
+    resetFontSize: () => void
 }
+
+const STEPS: FontScale[] = [100, 112, 125, 137]
 
 const FontSizeContext = createContext<FontSizeContextType | null>(null)
 
 export function FontSizeProvider({ children }: { children: ReactNode }) {
-    const [fontSize, setFontSize] = useState(MIN_FONT_SIZE)
+    const [scale, setScale] = useState<FontScale>(100)
 
     useEffect(() => {
-        const saved = localStorage.getItem('fontSize')
-        if (saved) setFontSize(Number(saved))
+        const saved = localStorage.getItem('fontScale')
+        if (saved && STEPS.includes(Number(saved) as FontScale)) {
+            setScale(Number(saved) as FontScale)
+        }
     }, [])
 
     useEffect(() => {
-        document.documentElement.style.fontSize = `${fontSize}px`
-        localStorage.setItem('fontSize', String(fontSize))
-    }, [fontSize])
+        document.documentElement.style.fontSize = `${scale}%`
+        localStorage.setItem('fontScale', String(scale))
+    }, [scale])
 
     function increaseFontSize() {
-        setFontSize((prev) => Math.min(prev + STEP, MAX_FONT_SIZE))
+        setScale((prev) => {
+            const index = STEPS.indexOf(prev)
+            return STEPS[Math.min(index + 1, STEPS.length - 1)]
+        })
     }
 
     function decreaseFontSize() {
-        setFontSize((prev) => Math.max(prev - STEP, MIN_FONT_SIZE))
+        setScale((prev) => {
+            const index = STEPS.indexOf(prev)
+            return STEPS[Math.max(index - 1, 0)]
+        })
+    }
+
+    function resetFontSize() {
+        setScale(100)
     }
 
     return (
         <FontSizeContext.Provider
-            value={{ fontSize, increaseFontSize, decreaseFontSize }}
+            value={{ scale, increaseFontSize, decreaseFontSize, resetFontSize }}
         >
             {children}
         </FontSizeContext.Provider>

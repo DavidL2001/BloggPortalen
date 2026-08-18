@@ -1,17 +1,37 @@
+import { useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useFontSize } from '../../contexts/FontSizeContext'
-import { useSidebar } from '../../contexts/SidebarContext'
 import { useAuth } from '../../hooks/useAuth'
 import styles from './navbar.module.css'
 
 export default function Navbar() {
     const { theme, toggleTheme } = useTheme()
-    const { isOpen, toggleSidebar } = useSidebar()
+    const { increaseFontSize, decreaseFontSize, resetFontSize, scale } =
+        useFontSize()
     const { logout, user, isAuthenticated } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const { increaseFontSize, decreaseFontSize } = useFontSize()
+    const navRef = useRef<HTMLElement>(null)
+
+    useEffect(() => {
+        const el = navRef.current
+        if (!el) return
+
+        const updateHeight = () => {
+            document.documentElement.style.setProperty(
+                '--navbar-height',
+                `${el.offsetHeight}px`
+            )
+        }
+
+        updateHeight()
+
+        const observer = new ResizeObserver(updateHeight)
+        observer.observe(el)
+
+        return () => observer.disconnect()
+    }, [])
 
     const handleLogout = () => {
         logout()
@@ -21,46 +41,50 @@ export default function Navbar() {
     const isHome = location.pathname === '/'
 
     return (
-        <header className={styles.navbar}>
-            <div className={styles.brand}>
-                <button
-                    type="button"
-                    className={styles.toggleButton}
-                    onClick={toggleSidebar}
-                    aria-expanded={isOpen}
-                    aria-controls="main-sidebar"
-                    aria-label={isOpen ? 'Stäng meny' : 'Öppna meny'}
-                >
-                    ☰
-                </button>
-                <Link to="/" className={styles.logo}>
-                    BloggPortalen
-                </Link>
-            </div>
+        <header ref={navRef} className={styles.navbar}>
+            <Link to="/" className={styles.logo}>
+                BloggPortalen
+            </Link>
+
             <div className={styles.actions}>
+                <div
+                    className={styles.fontControls}
+                    role="group"
+                    aria-label="Textstorlek"
+                >
+                    <button
+                        type="button"
+                        onClick={decreaseFontSize}
+                        className={styles.fontButton}
+                        aria-label="Minska textstorlek"
+                    >
+                        A-
+                    </button>
+                    <button
+                        type="button"
+                        onClick={resetFontSize}
+                        className={styles.fontButton}
+                        aria-label="Återställ textstorlek"
+                        title={`${scale}%`}
+                    >
+                        A
+                    </button>
+                    <button
+                        type="button"
+                        onClick={increaseFontSize}
+                        className={styles.fontButton}
+                        aria-label="Öka textstorlek"
+                    >
+                        A+
+                    </button>
+                </div>
+
                 <button
                     type="button"
                     onClick={toggleTheme}
                     className={styles.themeButton}
                 >
                     {theme === 'light' ? '🌙 Mörkt' : '☀️ Ljust'}
-                </button>
-
-                                <button
-                    type="button"
-                    onClick={decreaseFontSize}
-                    className={styles.fontSizeButton}
-                    aria-label="Minska textstorlek"
-                >
-                    A-
-                </button>
-                <button
-                    type="button"
-                    onClick={increaseFontSize}
-                    className={styles.fontSizeButton}
-                    aria-label="Öka textstorlek"
-                >
-                    A+
                 </button>
 
                 {isAuthenticated ? (
