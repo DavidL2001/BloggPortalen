@@ -20,7 +20,13 @@
     white-space: nowrap;
 }
 
+.logo:hover,
+.logo:active,
+.logo:visited {
+    color: var(--color-text);
+}
 
+/*radar ihop theme knappen, hälsningen och logga ut*/
 .actions {
     display: flex;
     align-items: center;
@@ -129,4 +135,46 @@
 
 .fontButton + .fontButton {
     border-left: 1px solid var(--color-border);
+/*wrapper för hamburgerknapp*/
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/*haburgerknappen dold som standard*/
+.toggleButton {
+    display: none;
+    padding: 0.4rem 0.6rem;
+    font-size: 1.1rem;
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 0.385rem;
+    cursor: pointer;
+}
+
+/*mobilläge*/
+@media (max-width: 768px) {
+    .toggleButton {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        flex-wrap: wrap;
+        row-gap: 0.5rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .actions {
+        width: 100%;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .greeting {
+        display: none;
+    }
 }

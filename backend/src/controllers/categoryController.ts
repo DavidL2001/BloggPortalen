@@ -9,8 +9,8 @@ export const getCategories = async (req: Request, res: Response) => {
 
     res.status(200).json(categories);
   } catch (error) {
-   res.status(500).json({
-      message: "Kunde inte hämta kategorier"
+    res.status(500).json({
+      message: "Kunde inte hämta kategorier",
     });
   }
 };
@@ -22,14 +22,14 @@ export const getCategoryById = async (req: Request, res: Response) => {
 
     if (!category) {
       return res.status(404).json({
-        message: "Kategorin hittades inte"
+        message: "Kategorin hittades inte",
       });
     }
 
     res.status(200).json(category);
   } catch (error) {
     res.status(500).json({
-    message: "Kunde inte hämta kategorin"
+      message: "Kunde inte hämta kategorin",
     });
   }
 };
@@ -45,20 +45,21 @@ export const createCategory = async (req: Request, res: Response) => {
     });
 
     res.status(201).json(category);
-} catch (error) {
-  console.error("Error creating category:", error);
+  } catch (error) {
+    console.error("Error creating category:", error);
 
-  if (
-    error instanceof mongoose.mongo.MongoServerError &&
-    error.code === 11000
-  ) {
-    return res.status(400).json({
-      message: "En kategori med det namnet finns redan"
+    if (
+      error instanceof mongoose.mongo.MongoServerError &&
+      error.code === 11000
+    ) {
+      return res.status(400).json({
+        message: "En kategori med det namnet finns redan",
+      });
+    }
+
+    return res.status(500).json({
+      message: "Kunde inte skapa kategorin",
     });
   }
 
-  return res.status(500).json({
-    message: "Kunde inte skapa kategorin"
-  });
-}
 };

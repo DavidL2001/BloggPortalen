@@ -26,6 +26,20 @@
   grid-row: 2;
   min-height: 0;
 
+  @media (max-width: 768px) {
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    height: calc(100vh - var(--navbar-height));
+    z-index: 50;
+    overflow-y: auto;
+
+    @media (max-width: 480px) {
+      top: var(--navbar-height);
+      height: calc(100vh - var(--navbar-height));
+    }
+  }
+
   @media (min-width: 769px) {
     position: sticky;
     top: var(--navbar-height);
@@ -41,6 +55,7 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;

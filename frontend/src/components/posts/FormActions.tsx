@@ -3,10 +3,7 @@ interface FormActionsProps {
   onCancel: () => void;
 }
 
-export default function FormActions({
-  loading,
-  onCancel,
-}: FormActionsProps) {
+export default function FormActions({ loading, onCancel }: FormActionsProps) {
   return (
     <div className="post-form__actions">
       <button type="submit" className="post-form__submit-btn" disabled={loading}>

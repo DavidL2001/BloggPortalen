@@ -49,6 +49,32 @@
   color: var(--color-accent);
 }
 
+.comment {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #ffffff;
+}
+
+.comment-form {
+  margin-top: 2rem;
+}
+
+.comment-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.comment-form__field textarea {
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
 @media (max-width: 600px) {
   .post-card__image {
     max-width: 100%;
@@ -56,9 +82,7 @@
   }
 }
 
-// ============================
-// Skapa/redigera inlägg
-// ============================
+
 
 .post-page {
   max-width: 720px;

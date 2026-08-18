@@ -16,7 +16,7 @@ const likeSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 // Gör så att man bara kan gilla en post en gång per användare
 likeSchema.index(
@@ -26,7 +26,7 @@ likeSchema.index(
   },
   {
     unique: true,
-  }
+  },
 );
 
 export const Like = model("Like", likeSchema);

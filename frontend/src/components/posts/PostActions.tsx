@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useDeletePost } from "../../hooks/useDeletePost";
 import { useAuth } from "../../hooks/useAuth";
+import LikeButton from "./LikeButton";
 
 interface PostActionsProps {
   postId: string;
@@ -17,7 +18,7 @@ export default function PostActions({ postId, authorId }: PostActionsProps) {
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
-      "Är du säker på att du vill ta bort inlägget?"
+      "Är du säker på att du vill ta bort inlägget?",
     );
 
     if (!confirmed) {
@@ -58,6 +59,10 @@ export default function PostActions({ postId, authorId }: PostActionsProps) {
             onClick={handleDelete}
             disabled={loading}
           >
+            Redigera
+          </button>
+
+          <button type="button" onClick={handleDelete} disabled={loading}>
             {loading ? "Tar bort..." : "Ta bort"}
           </button>
         </>

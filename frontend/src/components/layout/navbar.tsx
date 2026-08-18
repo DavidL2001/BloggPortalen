@@ -13,9 +13,7 @@ export default function Navbar() {
   const location = useLocation();
   const navRef = useRef<HTMLElement>(null);
 
-  // Mäter Navbarens verkliga höjd (den kan variera om den wrappar till
-  // flera rader, t.ex. vid större textstorlek) och sparar värdet i en
-  // CSS-variabel som hamburgermenyn och sidopanelen positionerar sig efter.
+  
   useEffect(() => {
     const el = navRef.current;
     if (!el) return;
@@ -35,12 +33,12 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
+    const handleLogout = () => {
+        logout()
+        navigate('/')
+    }
 
-  const isHome = location.pathname === '/';
+    const isHome = location.pathname === '/'
 
   return (
     <header ref={navRef} className={styles.navbar}>

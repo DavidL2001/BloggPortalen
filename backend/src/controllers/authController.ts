@@ -1,26 +1,31 @@
-import { Request, Response } from 'express';
-import User from '../models/User';
-import generateToken from '../utils/generateToken';
-import fs from 'fs';
-import path from 'path';
+import { Request, Response } from "express";
+import User from "../models/User";
+import generateToken from "../utils/generateToken";
+import fs from "fs";
+import path from "path";
 
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
+export const registerUser = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
-      res.status(400).json({ message: 'Alla fält måste fyllas i' });
+      res.status(400).json({ message: "Alla fält måste fyllas i" });
       return;
     }
 
     if (password.length < 6) {
-      res.status(400).json({ message: 'Lösenordet måste vara minst 6 tecken' });
+      res.status(400).json({ message: "Lösenordet måste vara minst 6 tecken" });
       return;
     }
 
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
-      res.status(409).json({ message: 'E-post eller användarnamn används redan' });
+      res
+        .status(409)
+        .json({ message: "E-post eller användarnamn används redan" });
       return;
     }
 
@@ -36,8 +41,10 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       token: generateToken(user._id.toString()),
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Okänt fel';
-    res.status(500).json({ message: 'Något gick fel vid registrering', error: message });
+    const message = error instanceof Error ? error.message : "Okänt fel";
+    res
+      .status(500)
+      .json({ message: "Något gick fel vid registrering", error: message });
   }
 };
 
@@ -46,14 +53,14 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).json({ message: 'E-post och lösenord krävs' });
+      res.status(400).json({ message: "E-post och lösenord krävs" });
       return;
     }
 
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user || !(await user.comparePassword(password))) {
-      res.status(401).json({ message: 'Fel e-post eller lösenord' });
+      res.status(401).json({ message: "Fel e-post eller lösenord" });
       return;
     }
 
@@ -67,8 +74,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       token: generateToken(user._id.toString()),
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Okänt fel';
-    res.status(500).json({ message: 'Något gick fel vid inloggning', error: message });
+    const message = error instanceof Error ? error.message : "Okänt fel";
+    res
+      .status(500)
+      .json({ message: "Något gick fel vid inloggning", error: message });
   }
 };
 
@@ -79,7 +88,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
 // Uppdatera profilen, inklusive avatar
 export const updateProfile = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { username, bio } = req.body;
@@ -93,7 +102,7 @@ export const updateProfile = async (
           "src",
           "uploads",
           "avatars",
-          req.file.filename
+          req.file.filename,
         );
 
         if (fs.existsSync(newImagePath)) {
@@ -102,7 +111,7 @@ export const updateProfile = async (
       }
 
       res.status(404).json({
-        message: "Användaren hittades inte"
+        message: "Användaren hittades inte",
       });
       return;
     }
@@ -121,7 +130,7 @@ export const updateProfile = async (
         const oldAvatarPath = path.join(
           process.cwd(),
           "src",
-          user.avatar.replace(/^\/+/, "")
+          user.avatar.replace(/^\/+/, ""),
         );
 
         if (fs.existsSync(oldAvatarPath)) {
@@ -149,7 +158,7 @@ export const updateProfile = async (
         "src",
         "uploads",
         "avatars",
-        req.file.filename
+        req.file.filename,
       );
 
       if (fs.existsSync(newImagePath)) {
@@ -169,14 +178,14 @@ export const updateProfile = async (
 // Ta bort profilbild
 export const removeProfilePicture = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const user = await User.findById(req.user?._id);
 
     if (!user) {
       res.status(404).json({
-        message: "Användaren hittades inte"
+        message: "Användaren hittades inte",
       });
       return;
     }
@@ -185,7 +194,7 @@ export const removeProfilePicture = async (
       const avatarPath = path.join(
         process.cwd(),
         "src",
-        user.avatar.replace(/^\/+/, "")
+        user.avatar.replace(/^\/+/, ""),
       );
 
       if (fs.existsSync(avatarPath)) {

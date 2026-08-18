@@ -7,21 +7,19 @@ import { Post } from "../models/Post";
 export const createComment = async (req: Request, res: Response) => {
   try {
     const postId =
-      typeof req.params.postId === "string"
-        ? req.params.postId
-        : undefined;
+      typeof req.params.postId === "string" ? req.params.postId : undefined;
 
     const { content } = req.body;
 
     if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({
-        message: "Ogiltigt inläggs-ID"
+        message: "Ogiltigt inläggs-ID",
       });
     }
 
     if (!content || typeof content !== "string" || !content.trim()) {
       return res.status(400).json({
-        message: "Kommentaren får inte vara tom"
+        message: "Kommentaren får inte vara tom",
       });
     }
 
@@ -31,13 +29,13 @@ export const createComment = async (req: Request, res: Response) => {
 
     if (!postExists) {
       return res.status(404).json({
-        message: "Inlägget hittades inte"
+        message: "Inlägget hittades inte",
       });
     }
 
     if (!req.user) {
       return res.status(401).json({
-        message: "Du måste vara inloggad för att lämna en kommentar"
+        message: "Du måste vara inloggad för att lämna en kommentar",
       });
     }
 
@@ -47,10 +45,11 @@ export const createComment = async (req: Request, res: Response) => {
       postId,
     });
 
+    await comment.populate("userId", "username");
     res.status(201).json(comment);
   } catch (error) {
     res.status(500).json({
-      message: "Kunde inte skapa kommentaren"
+      message: "Kunde inte skapa kommentaren",
     });
   }
 };
@@ -59,13 +58,11 @@ export const createComment = async (req: Request, res: Response) => {
 export const getPostComments = async (req: Request, res: Response) => {
   try {
     const postId =
-      typeof req.params.postId === "string"
-        ? req.params.postId
-        : undefined;
+      typeof req.params.postId === "string" ? req.params.postId : undefined;
 
     if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({
-        message: "Ogiltigt inläggs-ID"
+        message: "Ogiltigt inläggs-ID",
       });
     }
 
@@ -75,7 +72,7 @@ export const getPostComments = async (req: Request, res: Response) => {
 
     if (!postExists) {
       return res.status(404).json({
-        message: "Inlägget hittades inte"
+        message: "Inlägget hittades inte",
       });
     }
 
@@ -86,7 +83,7 @@ export const getPostComments = async (req: Request, res: Response) => {
     res.status(200).json(comments);
   } catch (error) {
     res.status(500).json({
-      message: "Kunde inte hämta kommentarerna"
+      message: "Kunde inte hämta kommentarerna",
     });
   }
 };
@@ -98,7 +95,7 @@ export const updateComment = async (req: Request, res: Response) => {
 
     if (!content || typeof content !== "string" || !content.trim()) {
       return res.status(400).json({
-        message: "Kommentaren får inte vara tom"
+        message: "Kommentaren får inte vara tom",
       });
     }
 
@@ -110,19 +107,19 @@ export const updateComment = async (req: Request, res: Response) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     ).populate("userId", "username");
 
     if (!comment) {
       return res.status(404).json({
-        message: "Kommentaren hittades inte"
+        message: "Kommentaren hittades inte",
       });
     }
 
     res.status(200).json(comment);
   } catch (error) {
     res.status(500).json({
-      message: "Kunde inte uppdatera kommentaren"
+      message: "Kunde inte uppdatera kommentaren",
     });
   }
 };
@@ -134,16 +131,16 @@ export const deleteComment = async (req: Request, res: Response) => {
 
     if (!comment) {
       return res.status(404).json({
-        message: "Kommentaren hittades inte"
+        message: "Kommentaren hittades inte",
       });
     }
 
     res.status(200).json({
-      message: "Kommentaren har tagits bort"
+      message: "Kommentaren har tagits bort",
     });
   } catch (error) {
     res.status(500).json({
-      message: "Kunde inte ta bort kommentaren"
+      message: "Kunde inte ta bort kommentaren",
     });
   }
 };

@@ -8,6 +8,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 body {
@@ -16,8 +17,8 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.6;
-  color: #111827;
-  background-color: #f9fafb;
+  color: var(--color-text-bg);
+  background-color: var(--color-bg);
 }
 
 h1,

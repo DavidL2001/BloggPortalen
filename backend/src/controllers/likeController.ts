@@ -7,13 +7,11 @@ import mongoose from "mongoose";
 export const likePost = async (req: Request, res: Response) => {
   try {
     const postId =
-      typeof req.params.postId === "string"
-        ? req.params.postId
-        : undefined;
+      typeof req.params.postId === "string" ? req.params.postId : undefined;
 
     if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({
-        message: "Ogiltigt inläggs-ID"
+        message: "Ogiltigt inläggs-ID",
       });
     }
 
@@ -21,13 +19,13 @@ export const likePost = async (req: Request, res: Response) => {
 
     if (!postExists) {
       return res.status(404).json({
-        message: "Inlägget hittades inte"
+        message: "Inlägget hittades inte",
       });
     }
 
     if (!req.user) {
       return res.status(401).json({
-        message: "Du måste vara inloggad för att gilla ett inlägg"
+        message: "Du måste vara inloggad för att gilla ett inlägg",
       });
     }
 
@@ -46,35 +44,33 @@ export const likePost = async (req: Request, res: Response) => {
       error.code === 11000
     ) {
       return res.status(400).json({
-        message: "Du har redan gillat detta inlägg"
+        message: "Du har redan gillat detta inlägg",
       });
     }
 
     console.error("Error liking post:", error); // Dessa errors syns inte för användaren utan loggas i serverns konsol för felsökning
 
     res.status(500).json({
-      message: "Kunde inte gilla inlägget"
+      message: "Kunde inte gilla inlägget",
     });
   }
 };
 
-// Ta bort en like 
+// Ta bort en like
 export const unlikePost = async (req: Request, res: Response) => {
   try {
     const postId =
-      typeof req.params.postId === "string"
-        ? req.params.postId
-        : undefined;
+      typeof req.params.postId === "string" ? req.params.postId : undefined;
 
     if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({
-        message: "Ogiltigt inläggs-ID"
+        message: "Ogiltigt inläggs-ID",
       });
     }
 
     if (!req.user) {
       return res.status(401).json({
-        message: "Du måste vara inloggad för att ta bort en gilla-markering"
+        message: "Du måste vara inloggad för att ta bort en gilla-markering",
       });
     }
 
@@ -85,18 +81,18 @@ export const unlikePost = async (req: Request, res: Response) => {
 
     if (!like) {
       return res.status(404).json({
-        message: "Du har inte gillat detta inlägg"
+        message: "Du har inte gillat detta inlägg",
       });
     }
 
     res.status(200).json({
-      message: "Du gillar inte inlägget längre"
+      message: "Du gillar inte inlägget längre",
     });
   } catch (error) {
     console.error("Error unliking post:", error);
 
     res.status(500).json({
-      message: "Kunde inte ta bort gilla-markeringen"
+      message: "Kunde inte ta bort gilla-markeringen",
     });
   }
 };
@@ -105,9 +101,7 @@ export const unlikePost = async (req: Request, res: Response) => {
 export const getPostLikes = async (req: Request, res: Response) => {
   try {
     const postId =
-      typeof req.params.postId === "string"
-        ? req.params.postId
-        : undefined;
+      typeof req.params.postId === "string" ? req.params.postId : undefined;
 
     if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({
@@ -130,7 +124,7 @@ export const getPostLikes = async (req: Request, res: Response) => {
           await Like.exists({
             postId,
             userId: req.user._id,
-          })
+          }),
         )
       : false;
 
