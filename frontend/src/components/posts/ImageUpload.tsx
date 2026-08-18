@@ -12,16 +12,17 @@ export default function ImageUpload({
   onAltTextChange,
 }: ImageUploadProps) {
   return (
-    <fieldset>
+    <fieldset className="post-form__fieldset">
       <legend>Bild</legend>
 
-      <div>
+      <div className="post-form__field">
         <label htmlFor="image">Välj bild</label>
 
         <input
           id="image"
           type="file"
           accept="image/jpeg,image/png,image/webp"
+          className="post-form__file-input"
           onChange={(event) => {
             const file = event.target.files?.[0] ?? null;
             onImageChange(file);
@@ -29,7 +30,7 @@ export default function ImageUpload({
         />
       </div>
 
-      <div>
+      <div className="post-form__field">
         <label htmlFor="altText">Alternativ text</label>
 
         <input
@@ -42,9 +43,8 @@ export default function ImageUpload({
       </div>
 
       {image && (
-        <p>
-          {" "}
-          Vald bild: <strong>{image.name}</strong>{" "}
+        <p className="post-form__file-name">
+          Vald bild: <strong>{image.name}</strong>
         </p>
       )}
     </fieldset>

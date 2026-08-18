@@ -19,12 +19,10 @@ export default function PostFilters({
   onCategoryChange,
   onSortChange,
 }: PostFiltersProps) {
-  return (
-    <section aria-label="Filtrera inlägg">
-      <div>
-        <label htmlFor="post-search">
-          Sök efter ett inlägg
-        </label>
+   return (
+    <section className="post-filters" aria-label="Filtrera inlägg">
+      <div className="post-filters__field post-filters__field--search">
+        <label htmlFor="post-search">Sök efter ett inlägg</label>
 
         <input
           id="post-search"
@@ -35,10 +33,8 @@ export default function PostFilters({
         />
       </div>
 
-      <div>
-        <label htmlFor="post-category">
-          Kategori
-        </label>
+      <div className="post-filters__field">
+        <label htmlFor="post-category">Kategori</label>
 
         <select
           id="post-category"
@@ -48,20 +44,15 @@ export default function PostFilters({
           <option value="">Alla kategorier</option>
 
           {categories.map((item) => (
-            <option
-              key={item._id}
-              value={item._id}
-            >
+            <option key={item._id} value={item._id}>
               {item.name}
             </option>
           ))}
         </select>
       </div>
 
-      <div>
-        <label htmlFor="post-sort">
-          Sortera
-        </label>
+      <div className="post-filters__field">
+        <label htmlFor="post-sort">Sortera</label>
 
         <select
           id="post-sort"
