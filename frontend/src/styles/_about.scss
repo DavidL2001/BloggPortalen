@@ -1,0 +1,247 @@
+.about {
+  width: min(1100px, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 4rem 0;
+}
+
+/* Hero */
+
+.about__hero {
+  max-width: 800px;
+  margin: 0 auto 5rem;
+  text-align: center;
+}
+
+.about__eyebrow {
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.about__hero h1 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.1;
+}
+
+.about__intro {
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* Om oss sektion */
+
+.about__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 5rem;
+}
+
+.about__text h2,
+.about__contact h2 {
+  margin-top: 0;
+  font-size: 2rem;
+}
+
+.about__text p {
+  line-height: 1.7;
+}
+
+.about__features {
+  display: grid;
+  gap: 1rem;
+}
+
+.about__feature {
+  padding: 1.5rem;
+  border: 1px solid #d7dce2;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.about__feature span {
+  font-size: 1.5rem;
+}
+
+.about__feature h3 {
+  margin: 0.75rem 0 0.4rem;
+}
+
+.about__feature p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.about__team {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.about__person {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.about__person h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+}
+
+.about__person p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.about__person-role {
+  margin-bottom: 0.75rem !important;
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+.about__team-intro {
+  margin-top: 2rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 750px) {
+  .about__team {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Kontakt */
+
+.about__contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  padding: 3rem;
+  border: 1px solid #d7dce2;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.about__contact > div:first-child p:last-child {
+  line-height: 1.7;
+}
+
+/* Kontakt formen */
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.contact-form__field label {
+  font-weight: 600;
+}
+
+.contact-form__field input,
+.contact-form__field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border: 1px solid #b8bec7;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.contact-form__field textarea {
+  resize: vertical;
+}
+
+.contact-form button {
+  align-self: flex-start;
+  padding: 0.75rem 1.25rem;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Bekräftelse efter skickat meddelande */
+
+.contact-form__success {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #b8bec7;
+  border-radius: 10px;
+}
+
+.contact-form__success p {
+  margin: 0 0 0.75rem;
+}
+
+/* Mörkt läge */
+
+.dark .about {
+  color: #f1f5f9;
+}
+
+.dark .about__hero h1,
+.dark .about__text h2 {
+  color: #f1f5f9;
+}
+
+.dark .about__contact h2 {
+  color: #111827;
+}
+
+.dark .about__feature,
+.dark .about__contact {
+  background: #ffffff;
+  color: #111827;
+}
+
+/* Texten är läsbar */
+.dark .contact-form__field label {
+  color: #111827;
+}
+
+.dark .contact-form__field input,
+.dark .contact-form__field textarea {
+  background: #ffffff;
+  color: #111827;
+}
+
+.dark .contact-form__success {
+  color: #f1f5f9;
+}
+
+/* Mobil */
+
+@media (max-width: 750px) {
+  .about {
+    width: min(100% - 2rem, 1100px);
+    padding: 2.5rem 0;
+  }
+
+  .about__hero {
+    margin-bottom: 3rem;
+  }
+
+  .about__content,
+  .about__contact {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about__contact {
+    padding: 1.5rem;
+  }
+}

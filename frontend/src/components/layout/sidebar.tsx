@@ -7,21 +7,22 @@ const dashboardItems = [
     { label: 'Profil info', to: '/profile' },
     { label: 'Mina Inlägg', to: '/dashboard/posts' },
     { label: 'Skapa Inlägg', to: '/dashboard/posts/new' },
-
+    { label: 'Statistik', to: '/stats' },
 ]
 
 const homeItems = [
     { label: 'Hem', to: '/' },
     { label: 'Inlägg', to: '/posts' },
-    { label: 'Om oss', to: '/about' },
-    { label: 'Kontakt', to: '/contact' }
+    { label: 'Om oss & Kontakt', to: '/about' },
 ]
+
 export default function Sidebar() {
     const { isOpen, toggleSidebar, closeSidebar } = useSidebar()
     const location = useLocation()
 
-    const isHome = location.pathname === '/'
-    const navItems = isHome ? homeItems : dashboardItems
+    const publicRoutes = ['/', '/about']
+    const isPublicPage = publicRoutes.includes(location.pathname)
+    const navItems = isPublicPage ? homeItems : dashboardItems
 
     return (
         <>
@@ -40,6 +41,14 @@ export default function Sidebar() {
                     </span>
                 </button>
             </div>
+
+            {isOpen && (
+                <div
+                    className={styles.backdrop}
+                    onClick={closeSidebar}
+                    aria-hidden="true"
+                />
+            )}
 
             <nav
                 id="main-sidebar"

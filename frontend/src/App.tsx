@@ -3,18 +3,23 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import { SidebarProvider } from './contexts/SidebarContext'
 import { AuthProvider } from './contexts/AuthContext'
 import { useAuth } from './hooks/useAuth'
+
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
+
 import Navbar from './components/layout/navbar'
 import Sidebar from './components/layout/sidebar'
+import Footer from './components/layout/footer'
 import PrivateRoute from './components/PrivateRoute'
 import { FontSizeProvider } from './components/context/FontSizeContext'
+
 import CreatePost from './pages/CreatePost'
 import PostDetails from './pages/PostDetails'
 import EditPost from './pages/EditPost'
 import Posts from './pages/Posts'
 import MyPosts from './pages/MyPosts'
+import About from './pages/About'
 
 import './styles/main.scss'
 
@@ -37,6 +42,22 @@ function AppContent() {
     <Routes>
       {/* Startsida - publik */}
       <Route path="/" element={<Home />} />
+
+      {/* Om oss & Kontakt - publik */}
+      <Route
+        path="/about"
+        element={
+          <>
+            <div className="dashboard-layout">
+              <Navbar />
+              <Sidebar />
+              <About />
+            </div>
+
+            <Footer />
+          </>
+        }
+      />
 
       {/* Login/Register - publik */}
       <Route
@@ -128,12 +149,25 @@ function AppContent() {
         }
       />
 
+      {/* Statistik - skyddad */}
+      <Route
+        path="/stats"
+        element={
+          <PrivateRoute>
+            <div className="dashboard-layout">
+              <Navbar />
+              <Sidebar />
+              <Dashboard />
+            </div>
+          </PrivateRoute>
+        }
+      />
+
       {/* 404 */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )
 }
-
 
 function App() {
   return (
