@@ -1,38 +1,41 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { SidebarProvider } from "./contexts/SidebarContext";
-import { AuthProvider } from "./contexts/AuthContext";
-import { useAuth } from "./hooks/useAuth";
-import Auth from "./components/Auth";
-import Dashboard from "./components/Dashboard";
-import Home from "./pages/Home";
-import Navbar from "./components/layout/navbar";
-import Sidebar from "./components/layout/sidebar";
-import Footer from "./components/layout/footer";
-import PrivateRoute from "./components/PrivateRoute";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { ThemeProvider } from './contexts/ThemeContext'
+import { SidebarProvider } from './contexts/SidebarContext'
+import { AuthProvider } from './contexts/AuthContext'
+import { useAuth } from './hooks/useAuth'
 
-import CreatePost from "./pages/CreatePost";
-import PostDetails from "./pages/PostDetails";
-import EditPost from "./pages/EditPost";
-import Posts from "./pages/Posts";
-import MyPosts from "./pages/MyPosts";
-import About from "./pages/About";
+import Auth from './pages/Auth'
+import Dashboard from './pages/Dashboard'
+import Home from './pages/Home'
 
-import "./styles/main.scss";
+import Navbar from './components/layout/navbar'
+import Sidebar from './components/layout/sidebar'
+import Footer from './components/layout/footer'
+import PrivateRoute from './components/PrivateRoute'
+import { FontSizeProvider } from './components/context/FontSizeContext'
+
+import CreatePost from './pages/CreatePost'
+import PostDetails from './pages/PostDetails'
+import EditPost from './pages/EditPost'
+import Posts from './pages/Posts'
+import MyPosts from './pages/MyPosts'
+import About from './pages/About'
+
+import './styles/main.scss'
 
 function AppContent() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth()
 
   if (loading) {
     return (
       <div
         role="status"
         aria-live="polite"
-        style={{ padding: "2rem", textAlign: "center" }}
+        style={{ padding: '2rem', textAlign: 'center' }}
       >
         <p>Initialiserar...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -59,7 +62,9 @@ function AppContent() {
       {/* Login/Register - publik */}
       <Route
         path="/auth"
-        element={isAuthenticated ? <Navigate to="/dashboard" /> : <Auth />}
+        element={
+          isAuthenticated ? <Navigate to="/dashboard" /> : <Auth />
+        }
       />
 
       {/* Dashboard - skyddad */}
@@ -119,10 +124,16 @@ function AppContent() {
       />
 
       {/* Alla inlägg - publik */}
-      <Route path="/posts" element={<Posts />} />
+      <Route
+        path="/posts"
+        element={<Posts />}
+      />
 
       {/* Detaljsida - publik */}
-      <Route path="/posts/:id" element={<PostDetails />} />
+      <Route
+        path="/posts/:id"
+        element={<PostDetails />}
+      />
 
       {/* Redigera inlägg - skyddad */}
       <Route
@@ -155,21 +166,23 @@ function AppContent() {
       {/* 404 */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
-  );
+  )
 }
 
 function App() {
   return (
     <ThemeProvider>
-      <SidebarProvider>
+      <FontSizeProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <AppContent />
-          </BrowserRouter>
+          <SidebarProvider>
+            <BrowserRouter>
+              <AppContent />
+            </BrowserRouter>
+          </SidebarProvider>
         </AuthProvider>
-      </SidebarProvider>
+      </FontSizeProvider>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,10 +1,47 @@
-/*Synlig fokusram när man navigerar med tangentbordet*/
+.mobileBar {
+    display: none;
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.toggleButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    background: transparent;
+    color: var(--color-text);
+    border: none;
+    cursor: pointer;
+}
+
+.toggleButton:hover {
+    background: var(--color-bg-hover);
+}
+
+.toggleIcon {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.toggleLabel {
+    font-size: 0.9rem;
+}
+
+.toggleButton:focus-visible,
 .navLink:focus-visible {
     outline: 3px solid var(--color-accent);
     outline-offset: 2px;
 }
 
-/*sidebar panelen*/
 .sidebar {
     width: 250px;
     height: 100vh;
@@ -13,7 +50,6 @@
     box-sizing: border-box;
 }
 
-/*nollställer standard utseendet op ul och radar länkarna vertikalt*/
 .navList {
     list-style: none;
     margin: 0;
@@ -23,7 +59,6 @@
     gap: 0.25rem;
 }
 
-/* styling för enskild navigationslänk*/
 .navLink {
     display: block;
     padding: 0.65rem 0.75rem;
@@ -33,29 +68,28 @@
     font-weight: 500;
 }
 
-/* ljusare bakrund när man håller över en länk med musen*/
 .navLink:hover {
     background: var(--color-bg-hover);
 }
 
-/* Klassen NavLink själv lägger till (isActive) på den länk
-   som matchar aktuell sida — blå bakgrund visar var man är*/
 .active {
     background: var(--color-accent);
     color: var(--color-accent-text);
 }
 
-/*under 768px*/
 @media (max-width: 768px) {
+    .mobileBar {
+        display: block;
+    }
 
     .sidebar {
         position: fixed;
-        top: 70px;
+        top: calc(var(--navbar-height) + var(--mobile-toolbar-height));
         left: 0;
-        height: calc(100vh - 70px);
+        height: calc(100vh - var(--navbar-height) - var(--mobile-toolbar-height));
         transform: translateX(-100%);
         transition: transform 0.2s ease-in-out;
-        z-index: 10;
+        z-index: 110;
     }
 
     .sidebar.open {

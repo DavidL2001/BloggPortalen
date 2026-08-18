@@ -6,9 +6,9 @@ interface PostListProps {
 }
 
 export default function PostList({ posts }: PostListProps) {
-  if (posts.length === 0) {
+    if (posts.length === 0) {
     return (
-      <p> Det finns inga inlägg att visa. </p>
+      <p className="post-list__empty">Det finns inga inlägg att visa.</p>
     );
   }
 
