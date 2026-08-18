@@ -43,6 +43,8 @@ export default function PostActions({ postId, authorId }: PostActionsProps) {
         Tillbaka till inlägg
       </button>
 
+      <LikeButton postId={postId} />
+
       {isOwner && (
         <>
           <button
