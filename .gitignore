@@ -1,0 +1,8 @@
+node_modules/
+.env
+
+backend/src/uploads/posts/*
+!backend/src/uploads/posts/.gitkeep
+
+backend/src/uploads/avatars/*
+!backend/src/uploads/avatars/.gitkeep
